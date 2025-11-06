@@ -2,10 +2,17 @@
 // NYAN CAT ANIMATION
 // ================================
 
+let nyanClickCount = 0;
+let totalPageClicks = 0;
+let nyanDirection = 'normal';
+let nyanAngle = 0;
+let nyanCatElement = null;
+
 // Create Nyan Cat element
 function createNyanCat() {
     const nyanContainer = document.createElement('div');
     nyanContainer.className = 'nyan-cat';
+    nyanCatElement = nyanContainer;
     
     const nyanBody = document.createElement('div');
     nyanBody.className = 'nyan-body';
@@ -22,8 +29,78 @@ function createNyanCat() {
     nyanContainer.appendChild(nyanBody);
     document.body.appendChild(nyanContainer);
     
+    // Add click handler to nyan cat
+    nyanContainer.addEventListener('click', (e) => {
+        e.stopPropagation(); // Don't trigger page click
+        nyanClickCount++;
+        
+        // Visual feedback
+        nyanContainer.style.transform = `scale(1.2) rotate(${nyanAngle}deg)`;
+        setTimeout(() => {
+            nyanContainer.style.transform = `scale(1) rotate(${nyanAngle}deg)`;
+        }, 200);
+        
+        // At 210 clicks, drop hearts and poop
+        if (nyanClickCount === 210) {
+            dropSpecialEmojis(e.clientX, e.clientY);
+            console.log('%c🎉 NYAN CAT ACHIEVEMENT UNLOCKED! 💕💩', 'color: #ff006e; font-size: 16px; font-weight: bold;');
+        }
+        
+        console.log(`🐱 Nyan cat clicked ${nyanClickCount} times!`);
+    });
+    
     // Add matrix trail behind nyan cat
     addMatrixTrail(nyanContainer);
+}
+
+// Drop hearts and poop emojis
+function dropSpecialEmojis(x, y) {
+    const emojis = ['💕', '💖', '💗', '💓', '💩', '💩', '✨', '⭐'];
+    const count = 20;
+    
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const emoji = document.createElement('div');
+            emoji.className = 'special-emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = (x + Math.random() * 200 - 100) + 'px';
+            emoji.style.top = y + 'px';
+            emoji.style.animationDelay = (Math.random() * 0.3) + 's';
+            
+            document.body.appendChild(emoji);
+            
+            // Add to pixel count (worth 10 pixels each!)
+            totalPixelsGenerated += 10;
+            pixelCountDisplay.textContent = totalPixelsGenerated;
+            
+            // Remove after animation
+            setTimeout(() => {
+                emoji.remove();
+            }, 2500);
+        }, i * 50);
+    }
+}
+
+// Change nyan cat direction
+function changeNyanDirection() {
+    if (nyanDirection === 'normal') {
+        nyanDirection = 'reverse';
+        nyanCatElement.style.animationName = 'nyanFlyReverse';
+        nyanCatElement.style.transform = `scaleX(-1) rotate(${nyanAngle}deg)`;
+    } else {
+        nyanDirection = 'normal';
+        nyanCatElement.style.animationName = 'nyanFly';
+        nyanCatElement.style.transform = `scaleX(1) rotate(${nyanAngle}deg)`;
+    }
+    console.log(`🔄 Nyan direction changed to: ${nyanDirection}`);
+}
+
+// Change nyan cat angle
+function changeNyanAngle() {
+    nyanAngle = (nyanAngle + 45) % 360;
+    const scaleX = nyanDirection === 'reverse' ? -1 : 1;
+    nyanCatElement.style.transform = `scaleX(${scaleX}) rotate(${nyanAngle}deg)`;
+    console.log(`📐 Nyan angle changed to: ${nyanAngle}°`);
 }
 
 // Matrix trail effect
@@ -173,6 +250,18 @@ animate();
 
 // Create pixel explosion on click
 document.addEventListener('click', (e) => {
+    // Increment total page clicks
+    totalPageClicks++;
+    
+    // Check for special click milestones
+    if (totalPageClicks % 42 === 0) {
+        changeNyanDirection();
+    }
+    
+    if (totalPageClicks % 66 === 0) {
+        changeNyanAngle();
+    }
+    
     const particleCount = 30; // Number of pixels per click
     
     for (let i = 0; i < particleCount; i++) {
@@ -240,3 +329,6 @@ console.log('%c🔍 Digital Trust Explorations', 'color: #00d9ff; font-size: 20p
 console.log('%cWelcome, curious developer! 👋', 'color: #b794f6; font-size: 14px;');
 console.log('%cClick anywhere on the page to generate pixel confetti!', 'color: #ff006e; font-size: 12px;');
 console.log('%c🐱 Keep your eyes peeled for a special visitor...', 'color: #00ff88; font-size: 12px;');
+console.log('%c💡 Hint: Every 42nd click does something special...', 'color: #ffea00; font-size: 11px;');
+console.log('%c💡 Hint: Every 66th click changes the angle...', 'color: #ffea00; font-size: 11px;');
+console.log('%c💡 Hint: Click the nyan cat 210 times for a surprise! 💕💩', 'color: #ff006e; font-size: 11px;');

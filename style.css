@@ -451,9 +451,11 @@ footer {
     height: 40px;
     top: 20%;
     left: -100px;
-    z-index: 9997;
+    z-index: 100;
     animation: nyanFly 60s linear infinite;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 @keyframes nyanFly {
@@ -473,6 +475,46 @@ footer {
     100% {
         left: 110%;
         top: 20%;
+    }
+}
+
+@keyframes nyanFlyReverse {
+    0% {
+        left: 110%;
+        top: 20%;
+    }
+    25% {
+        top: 30%;
+    }
+    50% {
+        top: 60%;
+    }
+    75% {
+        top: 40%;
+    }
+    100% {
+        left: -100px;
+        top: 20%;
+    }
+}
+
+/* Heart and Poop falling animation */
+.special-emoji {
+    position: fixed;
+    font-size: 24px;
+    z-index: 9999;
+    animation: emojiDrop 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes emojiDrop {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(300px) rotate(360deg);
+        opacity: 0;
     }
 }
 
