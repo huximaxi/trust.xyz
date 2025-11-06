@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Trust Explorations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <div class="dropdown">
+                <a href="#" class="nav-link">Interactive Research ▼</a>
+                <div class="dropdown-content">
+                    <a href="experiments/trust-network/index.html">Trust Network Map</a>
+                    <a href="experiments/trust-game/index.html">Trust Game</a>
+                </div>
+            </div>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- ASCII Art Header -->
+        <pre class="ascii-art">
+ _____ ____  _   _ ____ _____   _______  _______ _     ___  ____   _ _____ ___ ___  _   _ ____  
+|_   _|  _ \| | | / ___|_   _| | ____\ \/ / ___ | |   / _ \|  _ \ / \|_   _|_ _/ _ \| \ | / ___| 
+  | | | |_) | | | \___ \ | |   |  _|  \  /| |_/ | |  | | | | |_) / _ \ | |  | | | | |  \| \___ \ 
+  | | |  _ <| |_| |___) || |   | |___ /  \|  __/| |__| |_| |  _ / ___ \| |  | | |_| | |\  |___) |
+  |_| |_| \_\\___/|____/ |_|   |_____/_/\_\_|   |_____\___/|_| /_/   \_\_| |___\___/|_| \_|____/ 
+        </pre>
+
+        <!-- Welcome Message -->
+        <div class="welcome-box">
+            <h1 class="glitch">Welcome to Digital Trust Explorations</h1>
+            <p class="subtitle">A PhD Research Project</p>
+            <p class="description">
+                This site hosts interactive experiments and research tools exploring the nature of digital trust. 
+                Navigate through the menu above to discover semantic networks, interactive games, and more.
+            </p>
+            <p class="hint">
+                💡 <em>Click anywhere on the page for a surprise...</em>
+            </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <h2>Quick Start</h2>
+            <div class="link-grid">
+                <a href="experiments/trust-network/index.html" class="quick-link-card">
+                    <span class="icon">🕸️</span>
+                    <h3>Trust Network Map</h3>
+                    <p>Explore semantic connections</p>
+                </a>
+                <a href="experiments/trust-game/index.html" class="quick-link-card">
+                    <span class="icon">🎮</span>
+                    <h3>Trust Game</h3>
+                    <p>Interactive trust experiment</p>
+                </a>
+                <a href="about.html" class="quick-link-card">
+                    <span class="icon">📚</span>
+                    <h3>About</h3>
+                    <p>Learn about this research</p>
+                </a>
+                <a href="contact.html" class="quick-link-card">
+                    <span class="icon">📧</span>
+                    <h3>Contact</h3>
+                    <p>Get in touch</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Pixel Animation Canvas -->
+        <div class="animation-status">
+            <span id="pixel-count">0</span> pixels generated
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Digital Trust Explorations | PhD Research Project</p>
+        <p class="footer-note">Built with ♥ and vintage web aesthetics</p>
+    </footer>
+
+    <!-- Pixel confetti canvas -->
+    <canvas id="pixelCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
