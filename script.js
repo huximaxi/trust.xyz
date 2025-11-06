@@ -1,4 +1,70 @@
 // ================================
+// NYAN CAT ANIMATION
+// ================================
+
+// Create Nyan Cat element
+function createNyanCat() {
+    const nyanContainer = document.createElement('div');
+    nyanContainer.className = 'nyan-cat';
+    
+    const nyanBody = document.createElement('div');
+    nyanBody.className = 'nyan-body';
+    nyanBody.innerHTML = '🐱';
+    nyanBody.style.fontSize = '40px';
+    nyanBody.style.position = 'absolute';
+    nyanBody.style.top = '0';
+    nyanBody.style.left = '0';
+    
+    const nyanTrail = document.createElement('div');
+    nyanTrail.className = 'nyan-trail';
+    
+    nyanContainer.appendChild(nyanTrail);
+    nyanContainer.appendChild(nyanBody);
+    document.body.appendChild(nyanContainer);
+    
+    // Add matrix trail behind nyan cat
+    addMatrixTrail(nyanContainer);
+}
+
+// Matrix trail effect
+function addMatrixTrail(nyanElement) {
+    const matrixContainer = document.createElement('div');
+    matrixContainer.className = 'matrix-trail';
+    document.body.appendChild(matrixContainer);
+    
+    const chars = '01アイウエオカキクケコサシスセソタチツテト';
+    
+    setInterval(() => {
+        const rect = nyanElement.getBoundingClientRect();
+        
+        // Only create trail if nyan cat is visible
+        if (rect.left > 0 && rect.left < window.innerWidth) {
+            // Create 3-5 matrix characters
+            const numChars = Math.floor(Math.random() * 3) + 3;
+            
+            for (let i = 0; i < numChars; i++) {
+                const char = document.createElement('span');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = (rect.left - 20 + Math.random() * 40) + 'px';
+                char.style.top = (rect.top + rect.height / 2 + Math.random() * 20 - 10) + 'px';
+                char.style.animationDuration = (Math.random() * 1 + 1) + 's';
+                
+                matrixContainer.appendChild(char);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    char.remove();
+                }, 2000);
+            }
+        }
+    }, 100);
+}
+
+// Initialize Nyan Cat
+createNyanCat();
+
+// ================================
 // PIXEL CONFETTI ANIMATION
 // ================================
 
@@ -29,13 +95,15 @@ class Pixel {
         this.opacity = 1;
         this.fadeSpeed = Math.random() * 0.02 + 0.01;
         
-        // Purple color palette
+        // Multi-color palette
         const colors = [
             '#b794f6', // light purple
             '#9333ea', // main purple
-            '#a78bfa', // accent cyan-purple
-            '#c4b5fd', // dim purple
-            '#6b21a8'  // dark purple
+            '#00d9ff', // cyan
+            '#ff006e', // pink
+            '#00ff88', // green
+            '#ffea00', // yellow
+            '#ffffff'  // white
         ];
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }
@@ -115,11 +183,13 @@ document.addEventListener('click', (e) => {
     // Update counter
     pixelCountDisplay.textContent = totalPixelsGenerated;
     
-    // Add a flash effect
+    // Add a flash effect with random color
+    const flashColors = ['#1a1a2e', '#2d1b4e', '#1a2e3e', '#2e1a1a'];
+    const randomColor = flashColors[Math.floor(Math.random() * flashColors.length)];
     document.body.style.transition = 'background-color 0.1s';
-    document.body.style.backgroundColor = '#2d1b4e';
+    document.body.style.backgroundColor = randomColor;
     setTimeout(() => {
-        document.body.style.backgroundColor = '#1a0b2e';
+        document.body.style.backgroundColor = '#000000';
     }, 100);
 });
 
@@ -166,6 +236,7 @@ setInterval(createAmbientPixels, 2000);
 // CONSOLE MESSAGE (Easter egg)
 // ================================
 
-console.log('%c🔍 Digital Trust Explorations', 'color: #9333ea; font-size: 20px; font-weight: bold;');
+console.log('%c🔍 Digital Trust Explorations', 'color: #00d9ff; font-size: 20px; font-weight: bold;');
 console.log('%cWelcome, curious developer! 👋', 'color: #b794f6; font-size: 14px;');
-console.log('%cClick anywhere on the page to generate pixel confetti!', 'color: #a78bfa; font-size: 12px;');
+console.log('%cClick anywhere on the page to generate pixel confetti!', 'color: #ff006e; font-size: 12px;');
+console.log('%c🐱 Keep your eyes peeled for a special visitor...', 'color: #00ff88; font-size: 12px;');

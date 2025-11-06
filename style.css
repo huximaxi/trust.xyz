@@ -1,16 +1,19 @@
 /* ================================
-   RETRO PURPLE THEME
+   RETRO MULTI-COLOR THEME
    ================================ */
 
 :root {
-    --bg-dark: #1a0b2e;
-    --bg-medium: #2d1b4e;
+    --bg-dark: #000000;
+    --bg-medium: #1a1a2e;
     --purple-light: #b794f6;
     --purple-main: #9333ea;
     --purple-dark: #6b21a8;
-    --accent-cyan: #a78bfa;
-    --text-main: #e9d5ff;
-    --text-dim: #c4b5fd;
+    --accent-cyan: #00d9ff;
+    --accent-pink: #ff006e;
+    --accent-green: #00ff88;
+    --accent-yellow: #ffea00;
+    --text-main: #ffffff;
+    --text-dim: #b0b0b0;
 }
 
 * {
@@ -436,4 +439,166 @@ footer {
     .link-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ================================
+   NYAN CAT WITH MATRIX TRAIL
+   ================================ */
+
+.nyan-cat {
+    position: fixed;
+    width: 60px;
+    height: 40px;
+    top: 20%;
+    left: -100px;
+    z-index: 9997;
+    animation: nyanFly 60s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes nyanFly {
+    0% {
+        left: -100px;
+        top: 20%;
+    }
+    25% {
+        top: 40%;
+    }
+    50% {
+        top: 60%;
+    }
+    75% {
+        top: 30%;
+    }
+    100% {
+        left: 110%;
+        top: 20%;
+    }
+}
+
+/* Nyan Cat Body */
+.nyan-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        /* Face */
+        linear-gradient(to right, 
+            transparent 20%, #444 20% 25%, transparent 25% 30%,
+            #444 30% 35%, transparent 35% 75%,
+            #ffc0cb 75% 80%, transparent 80%
+        ),
+        /* Body */
+        linear-gradient(to bottom,
+            transparent 30%, #ffc0cb 30% 70%, transparent 70%
+        );
+    background-size: 100% 15%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: 0 40%, 0 0;
+    image-rendering: pixelated;
+}
+
+/* Rainbow Trail */
+.nyan-trail {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 30px;
+    background: repeating-linear-gradient(
+        to right,
+        #ff0000 0px, #ff0000 10px,
+        #ff7f00 10px, #ff7f00 20px,
+        #ffff00 20px, #ffff00 30px,
+        #00ff00 30px, #00ff00 40px,
+        #0000ff 40px, #0000ff 50px,
+        #8b00ff 50px, #8b00ff 60px
+    );
+    opacity: 0.6;
+    animation: trailShimmer 0.5s linear infinite;
+}
+
+@keyframes trailShimmer {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.6; }
+}
+
+/* Matrix Code Trail */
+.matrix-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9996;
+}
+
+.matrix-char {
+    position: absolute;
+    color: var(--accent-green);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    animation: matrixFall linear;
+    text-shadow: 0 0 5px var(--accent-green);
+    opacity: 0;
+}
+
+@keyframes matrixFall {
+    0% {
+        transform: translateY(-20px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+/* Add some color variation to different elements */
+nav {
+    border-bottom: 2px solid var(--accent-cyan);
+    box-shadow: 0 2px 10px rgba(0, 217, 255, 0.3);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    background-color: rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.welcome-box {
+    border: 2px solid var(--purple-main);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+}
+
+.quick-link-card:hover {
+    border-color: var(--accent-cyan);
+    background-color: rgba(0, 217, 255, 0.05);
+    box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+}
+
+.ascii-art {
+    background: linear-gradient(
+        90deg,
+        var(--purple-light) 0%,
+        var(--accent-cyan) 25%,
+        var(--accent-pink) 50%,
+        var(--accent-cyan) 75%,
+        var(--purple-light) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbowShift 3s linear infinite;
+}
+
+@keyframes rainbowShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
 }
