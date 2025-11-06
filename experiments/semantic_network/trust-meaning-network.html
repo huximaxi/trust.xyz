@@ -1,0 +1,1211 @@
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        // Value view functionality
+        let currentView = "network"; // "network" or "values"
+        let valueSimulation = null;
+        let valueNodes = [];
+        let valueLinks = [];
+        
+        // Extract unique values and count occurrences
+        function<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Trust Meaning Network</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        #controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #controls button {
+            margin-right: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+        #controls button:hover {
+            background-color: #2980b9;
+        }
+        #controls input[type="range"] {
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+        #network {
+            width: 100%;
+            height: 900px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .node {
+            cursor: pointer;
+        }
+        .node circle {
+            stroke-width: 2px;
+            transition: all 0.3s ease;
+        }
+        .node.highlighted circle {
+            stroke: #ff006e;
+            stroke-width: 5px;
+            filter: drop-shadow(0 0 10px #ff006e);
+        }
+        .node.dimmed {
+            opacity: 0.2;
+        }
+        .node.value-node circle {
+            stroke-width: 3px;
+            filter: drop-shadow(0 0 5px rgba(149, 165, 166, 0.5));
+        }
+        .node.value-node text {
+            font-size: 14px;
+            font-weight: bold;
+            fill: #2c3e50;
+        }
+        .node text {
+            font-size: 10px;
+            pointer-events: none;
+        }
+        .concept-node text {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .link {
+            fill: none;
+            stroke-opacity: 0.3;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            padding: 12px;
+            font: 12px sans-serif;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+            max-width: 300px;
+            z-index: 1000;
+            display: none;
+        }
+        #legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border-radius: 50%;
+        }
+        #stats {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Global Meaning Field of Trust: 76 Languages Network</h1>
+    
+    <div id="controls">
+        <button onclick="resetSimulation()">Reset Layout</button>
+        <button onclick="toggleLabels()">Toggle Labels</button>
+        <label>Link Strength: <input type="range" id="linkStrength" min="50" max="500" value="200" oninput="updateLinkStrength(this.value)"></label>
+        <label>Node Charge: <input type="range" id="nodeCharge" min="-1000" max="-100" value="-400" oninput="updateNodeCharge(this.value)"></label>
+        <div style="margin-top: 10px;">
+            <label>Find Language: 
+                <input type="text" id="languageSearch" list="languageList" placeholder="Type to search..." 
+                       style="width: 250px; padding: 5px; border: 1px solid #ddd; border-radius: 4px;"
+                       oninput="searchLanguage(this.value)">
+                <datalist id="languageList"></datalist>
+            </label>
+            <button onclick="clearHighlight()" style="margin-left: 10px;">Clear Highlight</button>
+        </div>
+        <div style="margin-top: 10px;">
+            <button onclick="toggleValueView()" id="valueToggle" style="background-color: #9b59b6;">Toggle Values View</button>
+            <span id="viewMode" style="margin-left: 10px; font-weight: bold;">Network View</span>
+        </div>
+    </div>
+    
+    <div id="network">
+        <div id="stats"></div>
+    </div>
+    
+    <div id="legend">
+        <h3>Semantic Clusters:</h3>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #e74c3c;"></span>
+            <span>Faith/Belief Core</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #3498db;"></span>
+            <span>Reliability/Dependability</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #2ecc71;"></span>
+            <span>Emotional Security</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #f39c12;"></span>
+            <span>Support/Leaning</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #9b59b6;"></span>
+            <span>Sincerity/Honesty</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #1abc9c;"></span>
+            <span>Hope/Expectation</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #34495e;"></span>
+            <span>Community/Collective</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #e67e22;"></span>
+            <span>Sacred/Spiritual</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #8b4513;"></span>
+            <span>Protective Trust (Meta)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #4682b4;"></span>
+            <span>Quiet Certainty (Meta)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #d4a574;"></span>
+            <span>Following Trust (Meta)</span>
+        </div>
+    </div>
+
+    <script>
+        // Expanded data structure
+        const nodes = [
+            // Original 25 + Hungarian
+            {id: "trust", label: "trust (English)", cluster: "faith", size: 15, def: "faith that someone is reliable and wants good"},
+            {id: "xinren", label: "信任 (Mandarin)", cluster: "sincerity", size: 15, def: "conviction in someone's sincerity and goodwill"},
+            {id: "vishwas", label: "विश्वास (Hindi)", cluster: "faith", size: 15, def: "complete faith and reliance on someone"},
+            {id: "confianza", label: "confianza (Spanish)", cluster: "emotional", size: 15, def: "emotional security with someone"},
+            {id: "confiance", label: "confiance (French)", cluster: "sincerity", size: 15, def: "calm conviction in someone's honesty"},
+            {id: "thiqa", label: "ثقة (Arabic)", cluster: "reliability", size: 15, def: "solid faith in someone's reliability"},
+            {id: "bishwash", label: "বিশ্বাস (Bengali)", cluster: "faith", size: 15, def: "deep faith and reliance"},
+            {id: "confianca", label: "confiança (Portuguese)", cluster: "hope", size: 15, def: "positive expectation of someone's behavior"},
+            {id: "doverie", label: "доверие (Russian)", cluster: "emotional", size: 15, def: "readiness to share secrets and rely on"},
+            {id: "shinrai", label: "信頼 (Japanese)", cluster: "reliability", size: 15, def: "reliability and dependence on someone"},
+            {id: "bharosa", label: "ਭਰੋਸਾ (Punjabi)", cluster: "support", size: 15, def: "complete reliance and hope"},
+            {id: "vertrauen", label: "Vertrauen (German)", cluster: "sincerity", size: 15, def: "inner conviction of someone's goodness"},
+            {id: "kapercayan", label: "kapercayan (Javanese)", cluster: "faith", size: 15, def: "faith in someone's word and deed"},
+            {id: "kepercayaan", label: "kepercayaan (Malay)", cluster: "faith", size: 15, def: "faith and dependence on someone"},
+            {id: "nammakam", label: "నమ్మకం (Telugu)", cluster: "support", size: 15, def: "strong conviction and reliance"},
+            {id: "tintruong", label: "sự tin tưởng (Vietnamese)", cluster: "faith", size: 15, def: "faith in someone's abilities and intentions"},
+            {id: "nambikkai", label: "நம்பிக்கை (Tamil)", cluster: "hope", size: 15, def: "hope and trust in someone"},
+            {id: "guven", label: "güven (Turkish)", cluster: "emotional", size: 15, def: "feeling of safety with someone"},
+            {id: "etimad", label: "اعتماد (Urdu)", cluster: "support", size: 15, def: "reliance and trust"},
+            {id: "silloe", label: "신뢰 (Korean)", cluster: "sincerity", size: 15, def: "faith in someone's honesty"},
+            {id: "fiducia", label: "fiducia (Italian)", cluster: "hope", size: 15, def: "positive expectation and reliance"},
+            {id: "khwam", label: "ความไว้วางใจ (Thai)", cluster: "emotional", size: 15, def: "heart-based acceptance and faith"},
+            {id: "bizalom", label: "bizalom (Hungarian)", cluster: "emotional", size: 15, def: "emotional bond of reliability and safety"},
+            
+            // New 50 languages
+            {id: "imani", label: "imani (Swahili)", cluster: "community", size: 15, def: "faith and reliability based on community"},
+            {id: "amana", label: "amana (Hausa)", cluster: "sacred", size: 15, def: "responsible preservation and protection"},
+            {id: "igbekele", label: "igbẹkẹle (Yoruba)", cluster: "emotional", size: 15, def: "peaceful reliance on someone"},
+            {id: "imnet", label: "እምነት (Amharic)", cluster: "sacred", size: 15, def: "unity of spiritual and worldly faith"},
+            {id: "ukwethemba", label: "ukwethemba (Zulu)", cluster: "hope", size: 15, def: "hope and expectation in someone"},
+            {id: "empistosini", label: "εμπιστοσύνη (Greek)", cluster: "sincerity", size: 15, def: "knowledge-based certainty"},
+            {id: "zaufanie", label: "zaufanie (Polish)", cluster: "sincerity", size: 15, def: "mutual openness and honesty"},
+            {id: "dovira", label: "довіра (Ukrainian)", cluster: "emotional", size: 15, def: "heartfelt acceptance"},
+            {id: "duvera", label: "důvěra (Czech)", cluster: "emotional", size: 15, def: "foundation of intimate relationship"},
+            {id: "doverie_bg", label: "доверие (Bulgarian)", cluster: "emotional", size: 15, def: "spiritual closeness and openness"},
+            {id: "incredere", label: "încredere (Romanian)", cluster: "support", size: 15, def: "courage to lean on another"},
+            {id: "megbizhatosag", label: "megbízhatóság (Hung.formal)", cluster: "reliability", size: 15, def: "consistent goodwill"},
+            {id: "luottamus", label: "luottamus (Finnish)", cluster: "emotional", size: 15, def: "quiet, deep connection"},
+            {id: "usaldus", label: "usaldus (Estonian)", cluster: "emotional", size: 15, def: "emotional and practical dependence"},
+            {id: "uzticiba", label: "uzticība (Latvian)", cluster: "emotional", size: 15, def: "stable emotional foundation"},
+            {id: "pasitikejimas", label: "pasitikėjimas (Lithuanian)", cluster: "hope", size: 15, def: "active faith and hope"},
+            {id: "besim", label: "besim (Albanian)", cluster: "sacred", size: 15, def: "sacred promise and loyalty"},
+            {id: "ndoba", label: "ნდობა (Georgian)", cluster: "emotional", size: 15, def: "deep understanding and acceptance"},
+            {id: "vstahutun", label: "վստահություն (Armenian)", cluster: "emotional", size: 15, def: "certainty from the heart"},
+            {id: "senim", label: "сенім (Kazakh)", cluster: "support", size: 15, def: "strength and support in someone"},
+            {id: "ishonch", label: "ishonch (Uzbek)", cluster: "sincerity", size: 15, def: "inner conviction and peace"},
+            {id: "etimad_az", label: "etimad (Azerbaijani)", cluster: "support", size: 15, def: "complete reliance"},
+            {id: "etemad", label: "اعتماد (Persian)", cluster: "sincerity", size: 15, def: "harmony of heart and mind"},
+            {id: "bawer", label: "باوەڕ (Kurdish)", cluster: "faith", size: 15, def: "deep conviction"},
+            {id: "emun", label: "אמון (Hebrew)", cluster: "sacred", size: 15, def: "intertwining of faith and loyalty"},
+            {id: "itgel", label: "итгэл (Mongolian)", cluster: "support", size: 15, def: "unconditional following"},
+            {id: "yidches", label: "ཡིད་ཆེས (Tibetan)", cluster: "sacred", size: 15, def: "pure-hearted acceptance"},
+            {id: "yonekyihmu", label: "ယုံကြည်မှု (Burmese)", cluster: "emotional", size: 15, def: "peaceful settling"},
+            {id: "sattaa", label: "ศรัทธา (Thai-spiritual)", cluster: "sacred", size: 15, def: "spiritual faith and respect"},
+            {id: "khuamseuatheu", label: "ຄວາມເຊື່ອຖື (Lao)", cluster: "community", size: 15, def: "community cohesion"},
+            {id: "tomnukchet", label: "ទំនុកចិត្ត (Khmer)", cluster: "emotional", size: 15, def: "heart connection"},
+            {id: "tiwala", label: "tiwala (Tagalog)", cluster: "support", size: 15, def: "complete devotion"},
+            {id: "pagsalig", label: "pagsalig (Cebuano)", cluster: "support", size: 15, def: "strong reliance"},
+            {id: "whakapono", label: "whakapono (Maori)", cluster: "sacred", size: 15, def: "spiritual and practical faith"},
+            {id: "hilinai", label: "hilinaʻi (Hawaiian)", cluster: "emotional", size: 15, def: "loving dependence"},
+            {id: "faatuatua", label: "faʻatuatua (Samoan)", cluster: "community", size: 15, def: "communal trust"},
+            {id: "vakabauta", label: "vakabauta (Fijian)", cluster: "community", size: 15, def: "collective reliability"},
+            {id: "traust", label: "traust (Icelandic)", cluster: "reliability", size: 15, def: "solid emotional foundation"},
+            {id: "tillit", label: "tillit (Norwegian)", cluster: "sincerity", size: 15, def: "mutual understanding"},
+            {id: "tillid", label: "tillid (Danish)", cluster: "emotional", size: 15, def: "open-hearted connection"},
+            {id: "fortroende", label: "förtroende (Swedish)", cluster: "emotional", size: 15, def: "deep intimacy"},
+            {id: "vertrouwen", label: "vertrouwen (Dutch)", cluster: "sincerity", size: 15, def: "certain knowledge and feeling"},
+            {id: "vertroue", label: "vertroue (Afrikaans)", cluster: "emotional", size: 15, def: "protected relationship"},
+            {id: "ymddiriedaeth", label: "ymddiriedaeth (Welsh)", cluster: "sacred", size: 15, def: "ancient bond and loyalty"},
+            {id: "muinin", label: "muinín (Irish)", cluster: "community", size: 15, def: "familial intimacy"},
+            {id: "earbsa", label: "earbsa (Scots Gaelic)", cluster: "support", size: 15, def: "natural reliance"},
+            {id: "konfiantza", label: "konfiantza (Basque)", cluster: "emotional", size: 15, def: "unique emotional bond"},
+            {id: "confianca_cat", label: "confiança (Catalan)", cluster: "emotional", size: 15, def: "Mediterranean warmth"},
+            {id: "confianza_gal", label: "confianza (Galician)", cluster: "community", size: 15, def: "community belonging"},
+            {id: "fiducja", label: "fiduċja (Maltese)", cluster: "community", size: 15, def: "islander cohesion"},
+            
+            // Conceptual nodes
+            {id: "faith", label: "Faith/Belief", cluster: "faith", size: 25, def: "Core belief concept"},
+            {id: "reliability", label: "Reliability", cluster: "reliability", size: 25, def: "Dependability concept"},
+            {id: "emotional", label: "Emotional Security", cluster: "emotional", size: 25, def: "Feeling safe concept"},
+            {id: "support", label: "Support/Leaning", cluster: "support", size: 25, def: "Reliance concept"},
+            {id: "sincerity", label: "Sincerity/Honesty", cluster: "sincerity", size: 25, def: "Truth concept"},
+            {id: "hope", label: "Hope/Expectation", cluster: "hope", size: 25, def: "Future-oriented trust"},
+            {id: "community", label: "Community/Collective", cluster: "community", size: 25, def: "Group-based trust"},
+            {id: "sacred", label: "Sacred/Spiritual", cluster: "sacred", size: 25, def: "Divine trust dimension"},
+            
+            // New meta-concept nodes
+            {id: "protective", label: "Protective Trust", cluster: "protective", size: 20, def: "Guardianship and preservation"},
+            {id: "quiet_certainty", label: "Quiet Certainty", cluster: "quiet_certainty", size: 20, def: "Internal confidence with restraint"},
+            {id: "following", label: "Following Trust", cluster: "following", size: 20, def: "Trust through guidance and following"}
+        ];
+
+        // Value taxonomy for each node
+        const nodeValues = {
+            // English family
+            trust: ["faith", "reliability", "honesty"],
+            // Chinese family  
+            xinren: ["sincerity", "loyalty", "wisdom"],
+            // Indian languages
+            vishwas: ["faith", "devotion", "strength"],
+            bharosa: ["hope", "support", "faith"],
+            nammakam: ["strength", "devotion", "support"],
+            nambikkai: ["hope", "faith", "future"],
+            // Romance languages
+            confianza: ["safety", "warmth", "belonging"],
+            confiance: ["honesty", "peace", "wisdom"],
+            confianca: ["hope", "future", "openness"],
+            fiducia: ["hope", "reliability", "future"],
+            confianca_cat: ["warmth", "belonging", "peace"],
+            confianza_gal: ["belonging", "community", "loyalty"],
+            fiducja: ["community", "loyalty", "safety"],
+            incredere: ["courage", "vulnerability", "support"],
+            // Germanic languages
+            vertrauen: ["sincerity", "wisdom", "faith"],
+            vertrouwen: ["wisdom", "certainty", "honesty"],
+            vertroue: ["protection", "safety", "belonging"],
+            // Slavic languages
+            doverie: ["vulnerability", "openness", "warmth"],
+            zaufanie: ["openness", "honesty", "vulnerability"],
+            dovira: ["warmth", "acceptance", "peace"],
+            duvera: ["intimacy", "vulnerability", "belonging"],
+            doverie_bg: ["spirituality", "openness", "peace"],
+            // Arabic family
+            thiqa: ["reliability", "strength", "faith"],
+            etimad: ["support", "devotion", "strength"],
+            etimad_az: ["support", "reliability", "devotion"],
+            etemad: ["harmony", "wisdom", "peace"],
+            // East Asian
+            shinrai: ["reliability", "respect", "wisdom"],
+            silloe: ["honesty", "respect", "loyalty"],
+            // Southeast Asian
+            kepercayaan: ["faith", "community", "devotion"],
+            kapercayan: ["faith", "loyalty", "community"],
+            tintruong: ["faith", "future", "support"],
+            khwam: ["love", "acceptance", "peace"],
+            sattaa: ["spirituality", "respect", "devotion"],
+            yonekyihmu: ["peace", "harmony", "acceptance"],
+            khuamseuatheu: ["community", "belonging", "support"],
+            tomnukchet: ["love", "warmth", "faith"],
+            // Turkic
+            guven: ["safety", "peace", "warmth"],
+            ishonch: ["peace", "certainty", "wisdom"],
+            senim: ["strength", "support", "guidance"],
+            // Central Asian
+            itgel: ["following", "devotion", "faith"],
+            // Finno-Ugric
+            bizalom: ["safety", "warmth", "reliability", "community"],
+            megbizhatosag: ["reliability", "consistency", "goodwill"],
+            luottamus: ["quietness", "depth", "peace"],
+            usaldus: ["dependence", "practicality", "warmth"],
+            // Baltic
+            uzticiba: ["stability", "warmth", "foundation"],
+            pasitikejimas: ["hope", "activity", "faith"],
+            // African
+            imani: ["community", "faith", "protection"],
+            amana: ["protection", "responsibility", "sacred"],
+            igbekele: ["peace", "reliance", "safety"],
+            imnet: ["spirituality", "unity", "faith"],
+            ukwethemba: ["hope", "community", "future"],
+            // Celtic
+            ymddiriedaeth: ["ancient", "loyalty", "sacred", "community"],
+            muinin: ["family", "intimacy", "belonging"],
+            earbsa: ["nature", "support", "simplicity"],
+            konfiantza: ["uniqueness", "warmth", "belonging"],
+            // Nordic
+            traust: ["foundation", "stability", "strength"],
+            tillit: ["understanding", "mutuality", "peace"],
+            tillid: ["openness", "warmth", "connection"],
+            fortroende: ["intimacy", "depth", "trust"],
+            // Pacific
+            tiwala: ["devotion", "loyalty", "faith"],
+            pagsalig: ["strength", "reliance", "support"],
+            whakapono: ["spirituality", "practicality", "faith"],
+            hilinai: ["love", "dependence", "warmth"],
+            faatuatua: ["community", "trust", "belonging"],
+            vakabauta: ["collective", "reliability", "community"],
+            // Mediterranean/Southern European
+            empistosini: ["knowledge", "certainty", "wisdom"],
+            besim: ["sacred", "promise", "loyalty"],
+            // Caucasian
+            ndoba: ["understanding", "acceptance", "depth"],
+            vstahutun: ["heart", "certainty", "warmth"],
+            // Middle Eastern
+            bawer: ["conviction", "faith", "strength"],
+            emun: ["faith", "loyalty", "intertwining"],
+            // Tibetan
+            yidches: ["purity", "acceptance", "spirituality"],
+            // Meta concepts
+            faith: ["belief", "conviction", "spirituality"],
+            reliability: ["dependability", "consistency", "stability"],
+            emotional: ["safety", "vulnerability", "connection"],
+            support: ["reliance", "strength", "guidance"],
+            sincerity: ["honesty", "truth", "authenticity"],
+            hope: ["future", "expectation", "optimism"],
+            community: ["belonging", "collective", "unity"],
+            sacred: ["divine", "spiritual", "holy"],
+            protective: ["guardianship", "preservation", "safety"],
+            quiet_certainty: ["restraint", "confidence", "depth"],
+            following: ["guidance", "leadership", "devotion"]
+        };
+
+        // Expanded links array
+        const links = [
+            // Original connections
+            {source: "trust", target: "faith", strength: 3},
+            {source: "trust", target: "reliability", strength: 3},
+            {source: "xinren", target: "sincerity", strength: 3},
+            {source: "xinren", target: "shinrai", strength: 2},
+            {source: "vishwas", target: "faith", strength: 3},
+            {source: "vishwas", target: "bishwash", strength: 2},
+            {source: "vishwas", target: "bharosa", strength: 2},
+            {source: "confianza", target: "emotional", strength: 3},
+            {source: "confianza", target: "confiance", strength: 2},
+            {source: "confianza", target: "confianca", strength: 2},
+            {source: "confianza", target: "fiducia", strength: 2},
+            {source: "confiance", target: "sincerity", strength: 3},
+            {source: "confianca", target: "hope", strength: 3},
+            {source: "fiducia", target: "hope", strength: 3},
+            {source: "thiqa", target: "reliability", strength: 3},
+            {source: "thiqa", target: "etimad", strength: 2},
+            {source: "doverie", target: "emotional", strength: 3},
+            {source: "doverie", target: "vertrauen", strength: 2},
+            {source: "shinrai", target: "reliability", strength: 3},
+            {source: "silloe", target: "sincerity", strength: 3},
+            {source: "silloe", target: "shinrai", strength: 2},
+            {source: "bharosa", target: "support", strength: 3},
+            {source: "nammakam", target: "support", strength: 3},
+            {source: "nambikkai", target: "hope", strength: 3},
+            {source: "vertrauen", target: "sincerity", strength: 3},
+            {source: "vertrauen", target: "trust", strength: 2},
+            {source: "kapercayan", target: "faith", strength: 3},
+            {source: "kepercayaan", target: "faith", strength: 3},
+            {source: "kapercayan", target: "kepercayaan", strength: 2},
+            {source: "tintruong", target: "faith", strength: 3},
+            {source: "khwam", target: "emotional", strength: 3},
+            {source: "guven", target: "emotional", strength: 3},
+            {source: "etimad", target: "support", strength: 3},
+            {source: "bizalom", target: "emotional", strength: 3},
+            {source: "bizalom", target: "reliability", strength: 2},
+            {source: "bizalom", target: "vertrauen", strength: 2},
+            {source: "bizalom", target: "community", strength: 2, type: "secondary"}, // New secondary connection
+            
+            // African language connections
+            {source: "imani", target: "community", strength: 3},
+            {source: "imani", target: "faith", strength: 2},
+            {source: "amana", target: "sacred", strength: 3},
+            {source: "amana", target: "protective", strength: 2, type: "secondary"},
+            {source: "igbekele", target: "emotional", strength: 3},
+            {source: "igbekele", target: "protective", strength: 2, type: "secondary"},
+            {source: "igbekele", target: "community", strength: 2},
+            {source: "imnet", target: "sacred", strength: 3},
+            {source: "imnet", target: "faith", strength: 2},
+            {source: "imnet", target: "protective", strength: 2, type: "secondary"},
+            {source: "imnet", target: "emotional", strength: 2, type: "secondary"}, // New secondary connection
+            {source: "ukwethemba", target: "hope", strength: 3},
+            {source: "ukwethemba", target: "community", strength: 2},
+            {source: "ukwethemba", target: "protective", strength: 2, type: "secondary"},
+            
+            // Slavic connections
+            {source: "zaufanie", target: "sincerity", strength: 3},
+            {source: "zaufanie", target: "doverie", strength: 2},
+            {source: "dovira", target: "emotional", strength: 3},
+            {source: "dovira", target: "doverie", strength: 2},
+            {source: "duvera", target: "emotional", strength: 3},
+            {source: "duvera", target: "zaufanie", strength: 2},
+            {source: "doverie_bg", target: "emotional", strength: 3},
+            {source: "doverie_bg", target: "doverie", strength: 2},
+            
+            // Baltic connections
+            {source: "uzticiba", target: "emotional", strength: 3},
+            {source: "pasitikejimas", target: "hope", strength: 3},
+            {source: "usaldus", target: "emotional", strength: 3},
+            {source: "usaldus", target: "quiet_certainty", strength: 2, type: "secondary"},
+            {source: "usaldus", target: "reliability", strength: 2},
+            {source: "uzticiba", target: "pasitikejimas", strength: 2},
+            
+            // Nordic connections
+            {source: "luottamus", target: "emotional", strength: 3},
+            {source: "luottamus", target: "quiet_certainty", strength: 2, type: "secondary"},
+            {source: "luottamus", target: "sincerity", strength: 2},
+            {source: "traust", target: "reliability", strength: 3},
+            {source: "tillit", target: "sincerity", strength: 3},
+            {source: "tillid", target: "emotional", strength: 3},
+            {source: "fortroende", target: "emotional", strength: 3},
+            {source: "tillit", target: "tillid", strength: 2},
+            {source: "tillid", target: "fortroende", strength: 2},
+            
+            // Celtic connections
+            {source: "ymddiriedaeth", target: "sacred", strength: 3},
+            {source: "ymddiriedaeth", target: "community", strength: 2},
+            {source: "ymddiriedaeth", target: "faith", strength: 2},
+            {source: "muinin", target: "community", strength: 3},
+            {source: "earbsa", target: "support", strength: 3},
+            {source: "earbsa", target: "faith", strength: 2},
+            {source: "muinin", target: "earbsa", strength: 2},
+            
+            // Central Asian connections
+            {source: "senim", target: "support", strength: 3},
+            {source: "senim", target: "following", strength: 2, type: "secondary"},
+            {source: "senim", target: "reliability", strength: 2},
+            {source: "ishonch", target: "sincerity", strength: 3},
+            {source: "itgel", target: "support", strength: 3},
+            {source: "itgel", target: "following", strength: 2, type: "secondary"},
+            {source: "itgel", target: "faith", strength: 2},
+            {source: "senim", target: "itgel", strength: 2},
+            
+            // Middle Eastern connections
+            {source: "etemad", target: "sincerity", strength: 3},
+            {source: "emun", target: "sacred", strength: 3},
+            {source: "bawer", target: "faith", strength: 3},
+            {source: "etemad", target: "etimad", strength: 2},
+            
+            // Southeast Asian connections
+            {source: "sattaa", target: "sacred", strength: 3},
+            {source: "sattaa", target: "faith", strength: 2},
+            {source: "tomnukchet", target: "emotional", strength: 3},
+            {source: "tomnukchet", target: "faith", strength: 2},
+            {source: "tiwala", target: "support", strength: 3},
+            {source: "pagsalig", target: "support", strength: 3},
+            {source: "tiwala", target: "pagsalig", strength: 2},
+            {source: "yonekyihmu", target: "emotional", strength: 3},
+            {source: "yonekyihmu", target: "hope", strength: 2},
+            {source: "khuamseuatheu", target: "community", strength: 3},
+            {source: "khuamseuatheu", target: "support", strength: 2},
+            
+            // Pacific connections
+            {source: "whakapono", target: "sacred", strength: 3},
+            {source: "hilinai", target: "emotional", strength: 3},
+            {source: "faatuatua", target: "community", strength: 3},
+            {source: "vakabauta", target: "community", strength: 3},
+            {source: "faatuatua", target: "vakabauta", strength: 2},
+            
+            // Additional connections for isolated languages
+            {source: "empistosini", target: "sincerity", strength: 3},
+            {source: "empistosini", target: "reliability", strength: 2},
+            {source: "besim", target: "sacred", strength: 3},
+            {source: "besim", target: "reliability", strength: 2},
+            {source: "besim", target: "faith", strength: 2},
+            {source: "yidches", target: "sacred", strength: 3},
+            {source: "yidches", target: "faith", strength: 2},
+            {source: "yidches", target: "emotional", strength: 2},
+            {source: "incredere", target: "support", strength: 3},
+            {source: "incredere", target: "emotional", strength: 2},
+            {source: "megbizhatosag", target: "reliability", strength: 3},
+            {source: "megbizhatosag", target: "quiet_certainty", strength: 2, type: "secondary"},
+            {source: "megbizhatosag", target: "sincerity", strength: 2},
+            
+            // Romance cross-connections
+            {source: "confianca_cat", target: "confianza", strength: 2},
+            {source: "confianza_gal", target: "confianza", strength: 2},
+            {source: "fiducja", target: "fiducia", strength: 2},
+            {source: "fiducja", target: "emotional", strength: 2},
+            {source: "incredere", target: "confiance", strength: 2},
+            
+            // Meta-bubble connections (dotted)
+            {source: "protective", target: "sacred", strength: 2, type: "meta"},
+            {source: "protective", target: "community", strength: 2, type: "meta"},
+            {source: "protective", target: "support", strength: 2, type: "meta"},
+            {source: "protective", target: "emotional", strength: 2, type: "meta"},
+            
+            {source: "quiet_certainty", target: "emotional", strength: 2, type: "meta"},
+            {source: "quiet_certainty", target: "reliability", strength: 2, type: "meta"},
+            {source: "quiet_certainty", target: "sincerity", strength: 2, type: "meta"},
+            
+            {source: "following", target: "support", strength: 2, type: "meta"},
+            {source: "following", target: "faith", strength: 2, type: "meta"},
+            {source: "following", target: "reliability", strength: 2, type: "meta"},
+            
+            // Cross-conceptual connections
+            {source: "faith", target: "hope", strength: 2},
+            {source: "reliability", target: "sincerity", strength: 2},
+            {source: "emotional", target: "support", strength: 2},
+            {source: "sincerity", target: "reliability", strength: 2},
+            {source: "support", target: "hope", strength: 2},
+            {source: "faith", target: "emotional", strength: 2},
+            {source: "community", target: "emotional", strength: 2},
+            {source: "sacred", target: "faith", strength: 2},
+            {source: "community", target: "support", strength: 2},
+            {source: "sacred", target: "community", strength: 2}
+        ];
+
+        // Color scheme for clusters
+        const clusterColors = {
+            faith: "#e74c3c",
+            reliability: "#3498db",
+            emotional: "#2ecc71",
+            support: "#f39c12",
+            sincerity: "#9b59b6",
+            hope: "#1abc9c",
+            community: "#34495e",
+            sacred: "#e67e22",
+            protective: "#8b4513",
+            quiet_certainty: "#4682b4",
+            following: "#d4a574"
+        };
+
+        // Set up SVG
+        const width = document.getElementById('network').clientWidth;
+        const height = 900;
+
+        const svg = d3.select("#network")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const g = svg.append("g");
+
+        // Add zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+
+        svg.call(zoom);
+
+        // Click on background to clear highlight
+        svg.on("click", function(event) {
+            if (event.target === this || event.target.tagName === 'svg') {
+                clearHighlight();
+            }
+        });
+
+        // Create tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+        // Create force simulation
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id(d => d.id).distance(d => 100 / d.strength))
+            .force("charge", d3.forceManyBody().strength(-400))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(d => d.size + 5))
+            .force("radial", d3.forceRadial(
+                d => d.size > 20 ? 0 : 300, // Concepts at center, languages within 300px radius
+                width / 2, 
+                height / 2
+            ).strength(0.05)); // Gentle pull to keep outliers accessible
+
+        // Create links
+        let link = g.append("g")
+            .selectAll("line")
+            .data(links)
+            .join("line")
+            .attr("class", "link")
+            .attr("stroke", "#999")
+            .attr("stroke-width", d => Math.sqrt(d.strength))
+            .attr("stroke-dasharray", d => 
+                d.type === "secondary" || d.type === "meta" ? "5,5" : "none"
+            );
+
+        // Create nodes
+        let node = g.append("g")
+            .selectAll("g")
+            .data(nodes)
+            .join("g")
+            .attr("class", d => d.size > 20 ? "node concept-node" : "node")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        node.append("circle")
+            .attr("r", d => d.size)
+            .attr("fill", d => clusterColors[d.cluster])
+            .attr("stroke", "#fff");
+
+        let labels = node.append("text")
+            .text(d => d.label)
+            .attr("x", 0)
+            .attr("y", d => d.size + 12)
+            .attr("text-anchor", "middle")
+            .style("display", d => d.size > 20 ? "block" : "none");
+
+        // Mouse events
+        node.on("mouseover", function(event, d) {
+            tooltip.style("display", "block")
+                .transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(`<strong>${d.label}</strong><br/>${d.def}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+                
+            // Highlight connected nodes
+            link.style("stroke-opacity", l => l.source === d || l.target === d ? 1 : 0.1);
+            node.style("opacity", n => {
+                const connected = links.some(l => 
+                    (l.source === d && l.target === n) || 
+                    (l.target === d && l.source === n) ||
+                    n === d
+                );
+                return connected ? 1 : 0.3;
+            });
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0)
+                .on("end", () => tooltip.style("display", "none"));
+            
+            // Only reset if no node is highlighted
+            if (!highlightedNode) {
+                link.style("stroke-opacity", 0.3);
+                node.style("opacity", 1);
+            }
+        });
+
+        // Update positions
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node
+                .attr("transform", d => `translate(${d.x},${d.y})`);
+        });
+
+        // Update stats
+        function updateStats() {
+            const stats = `
+                Languages: ${nodes.filter(n => n.size <= 20).length}<br>
+                Concepts: ${nodes.filter(n => n.size > 20).length}<br>
+                Connections: ${links.length}
+            `;
+            document.getElementById('stats').innerHTML = stats;
+        }
+        updateStats();
+
+        // Populate language dropdown
+        const languageNodes = nodes.filter(n => n.size <= 20).sort((a, b) => a.label.localeCompare(b.label));
+        const datalist = document.getElementById('languageList');
+        languageNodes.forEach(node => {
+            const option = document.createElement('option');
+            option.value = node.label;
+            datalist.appendChild(option);
+        });
+
+        // Search and highlight functionality
+        let highlightedNode = null;
+        
+        function searchLanguage(searchTerm) {
+            if (!searchTerm) {
+                clearHighlight();
+                return;
+            }
+            
+            const foundNode = languageNodes.find(n => 
+                n.label.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (foundNode) {
+                highlightNode(foundNode);
+            }
+        }
+        
+        function highlightNode(targetNode) {
+            // Clear previous highlight
+            node.classed("highlighted", false);
+            node.classed("dimmed", false);
+            
+            // Apply new highlight
+            node.classed("highlighted", d => d === targetNode);
+            node.classed("dimmed", d => d !== targetNode && d.size <= 20);
+            
+            // Highlight connected nodes and links
+            link.style("stroke-opacity", l => 
+                l.source === targetNode || l.target === targetNode ? 1 : 0.1
+            );
+            
+            node.filter(d => d.size > 20).style("opacity", n => {
+                const connected = links.some(l => 
+                    (l.source === targetNode && l.target === n) || 
+                    (l.target === targetNode && l.source === n)
+                );
+                return connected ? 1 : 0.3;
+            });
+            
+            highlightedNode = targetNode;
+            
+            // Zoom to highlighted node
+            const scale = 2;
+            const [x, y] = [targetNode.x, targetNode.y];
+            svg.transition()
+                .duration(750)
+                .call(
+                    zoom.transform,
+                    d3.zoomIdentity
+                        .translate(width / 2, height / 2)
+                        .scale(scale)
+                        .translate(-x, -y)
+                );
+        }
+        
+        function clearHighlight() {
+            node.classed("highlighted", false);
+            node.classed("dimmed", false);
+            node.style("opacity", 1);
+            link.style("stroke-opacity", 0.3);
+            highlightedNode = null;
+            document.getElementById('languageSearch').value = '';
+        }
+
+        // Control functions
+        let labelsVisible = false;
+        
+        function toggleLabels() {
+            labelsVisible = !labelsVisible;
+            if (currentView === "network") {
+                labels.style("display", d => {
+                    if (d.size > 20) return "block";
+                    return labelsVisible ? "block" : "none";
+                });
+            }
+        }
+        
+        function resetSimulation() {
+            simulation.alpha(1).restart();
+            svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+        }
+        
+        function updateLinkStrength(value) {
+            simulation.force("link").distance(d => value / d.strength);
+            simulation.alpha(0.3).restart();
+        }
+        
+        function updateNodeCharge(value) {
+            simulation.force("charge").strength(+value);
+            simulation.alpha(0.3).restart();
+        }
+
+        // Drag functions
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        // Value view functionality
+        let currentView = "network"; // "network" or "values"
+        let valueSimulation = null;
+        let valueNodes = [];
+        let valueLinks = [];
+        
+        // Extract unique values and count occurrences
+        function getValueCounts() {
+            const valueCounts = {};
+            Object.entries(nodeValues).forEach(([nodeId, values]) => {
+                values.forEach(value => {
+                    valueCounts[value] = (valueCounts[value] || 0) + 1;
+                });
+            });
+            return valueCounts;
+        }
+        
+        // Create value-centric nodes
+        function createValueNodes() {
+            const valueCounts = getValueCounts();
+            const values = Object.keys(valueCounts);
+            const goldenRatio = 1.618033988749895;
+            const angleStep = Math.PI * 2 / goldenRatio;
+            
+            // Create value center nodes
+            const valueNodeMap = {};
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Calculate fibonacci positions for values
+            values.forEach((value, i) => {
+                const radius = Math.sqrt(i) * 50;
+                const angle = i * angleStep;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                valueNodeMap[value] = {
+                    id: `value_${value}`,
+                    label: value.toUpperCase(),
+                    x: x,
+                    y: y,
+                    fx: x,
+                    fy: y,
+                    size: Math.log(valueCounts[value] + 1) * 15 + 10,
+                    cluster: "value",
+                    def: `${valueCounts[value]} languages share this value`,
+                    isValue: true,
+                    value: value
+                };
+            });
+            
+            // Create language nodes positioned around their values
+            const languageNodeMap = {};
+            const processedNodes = [];
+            
+            nodes.filter(n => nodeValues[n.id]).forEach(node => {
+                const values = nodeValues[node.id];
+                const primaryValue = values[0]; // Use first value as primary
+                
+                if (valueNodeMap[primaryValue]) {
+                    const valueNode = valueNodeMap[primaryValue];
+                    const siblings = processedNodes.filter(n => 
+                        nodeValues[n.id] && nodeValues[n.id][0] === primaryValue
+                    );
+                    
+                    const petalAngle = (siblings.length * 2 * Math.PI) / 8;
+                    const petalRadius = valueNode.size + 40;
+                    
+                    languageNodeMap[node.id] = {
+                        id: node.id,
+                        label: node.label,
+                        x: valueNode.x + Math.cos(petalAngle) * petalRadius,
+                        y: valueNode.y + Math.sin(petalAngle) * petalRadius,
+                        size: node.size,
+                        cluster: node.cluster,
+                        def: node.def,
+                        primaryValue: primaryValue,
+                        allValues: values
+                    };
+                    processedNodes.push(node);
+                }
+            });
+            
+            return {
+                valueNodes: Object.values(valueNodeMap),
+                languageNodes: Object.values(languageNodeMap)
+            };
+        }
+        
+        // Create value-based links
+        function createValueLinks(valueNodeList, languageNodeList) {
+            const links = [];
+            const nodeMap = {};
+            
+            [...valueNodeList, ...languageNodeList].forEach(n => {
+                nodeMap[n.id] = n;
+            });
+            
+            // Link languages to their values
+            languageNodeList.forEach(langNode => {
+                if (langNode.allValues) {
+                    langNode.allValues.forEach((value, i) => {
+                        const valueId = `value_${value}`;
+                        if (nodeMap[valueId]) {
+                            links.push({
+                                source: langNode.id,
+                                target: valueId,
+                                strength: i === 0 ? 3 : 2,
+                                type: i === 0 ? "primary" : "secondary"
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // Create value-to-value links based on co-occurrence
+            const valueCoOccurrence = {};
+            Object.values(nodeValues).forEach(values => {
+                for (let i = 0; i < values.length; i++) {
+                    for (let j = i + 1; j < values.length; j++) {
+                        const key = [values[i], values[j]].sort().join('-');
+                        valueCoOccurrence[key] = (valueCoOccurrence[key] || 0) + 1;
+                    }
+                }
+            });
+            
+            Object.entries(valueCoOccurrence).forEach(([key, count]) => {
+                if (count > 2) {
+                    const [v1, v2] = key.split('-');
+                    links.push({
+                        source: `value_${v1}`,
+                        target: `value_${v2}`,
+                        strength: Math.log(count + 1),
+                        type: "value-connection"
+                    });
+                }
+            });
+            
+            return links;
+        }
+        
+        // Toggle between views
+        function toggleValueView() {
+            if (currentView === "network") {
+                // Switch to value view
+                currentView = "values";
+                document.getElementById("viewMode").textContent = "Values View";
+                document.getElementById("valueToggle").style.backgroundColor = "#e74c3c";
+                
+                const { valueNodes: vNodes, languageNodes: lNodes } = createValueNodes();
+                valueNodes = [...vNodes, ...lNodes];
+                valueLinks = createValueLinks(vNodes, lNodes);
+                
+                // Stop network simulation
+                simulation.stop();
+                
+                // Clear current visualization
+                g.selectAll("*").remove();
+                
+                // Create value simulation
+                valueSimulation = d3.forceSimulation(valueNodes)
+                    .force("link", d3.forceLink(valueLinks).id(d => d.id).distance(80))
+                    .force("charge", d3.forceManyBody().strength(d => d.isValue ? -800 : -200))
+                    .force("collision", d3.forceCollide().radius(d => d.size + 10))
+                    .alpha(0.3);
+                
+                // Draw value view
+                const vLink = g.append("g")
+                    .selectAll("line")
+                    .data(valueLinks)
+                    .join("line")
+                    .attr("class", "link")
+                    .attr("stroke", d => d.type === "value-connection" ? "#666" : "#999")
+                    .attr("stroke-width", d => Math.sqrt(d.strength))
+                    .attr("stroke-dasharray", d => d.type === "secondary" ? "5,5" : "none");
+                
+                const vNode = g.append("g")
+                    .selectAll("g")
+                    .data(valueNodes)
+                    .join("g")
+                    .attr("class", d => d.isValue ? "node value-node" : "node")
+                    .call(d3.drag()
+                        .on("start", (e, d) => dragstarted(e, d))
+                        .on("drag", (e, d) => dragged(e, d))
+                        .on("end", (e, d) => dragended(e, d)));
+                
+                vNode.append("circle")
+                    .attr("r", d => d.size)
+                    .attr("fill", d => d.isValue ? "#95a5a6" : clusterColors[d.cluster])
+                    .attr("stroke", "#fff")
+                    .attr("stroke-width", d => d.isValue ? 3 : 2);
+                
+                vNode.append("text")
+                    .text(d => d.label)
+                    .attr("x", 0)
+                    .attr("y", d => d.size + 12)
+                    .attr("text-anchor", "middle")
+                    .style("font-weight", d => d.isValue ? "bold" : "normal")
+                    .style("font-size", d => d.isValue ? "14px" : "10px");
+                
+                // Mouse events for value view
+                vNode.on("mouseover", function(event, d) {
+                    tooltip.style("display", "block")
+                        .transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    
+                    if (d.isValue) {
+                        const connectedLangs = valueNodes.filter(n => 
+                            !n.isValue && n.allValues && n.allValues.includes(d.value)
+                        );
+                        tooltip.html(`<strong>${d.label}</strong><br/>${d.def}<br/><br/>Languages: ${connectedLangs.length}`);
+                    } else {
+                        tooltip.html(`<strong>${d.label}</strong><br/>${d.def}<br/><br/>Values: ${d.allValues ? d.allValues.join(", ") : ""}`);
+                    }
+                    
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0)
+                        .on("end", () => tooltip.style("display", "none"));
+                });
+                
+                valueSimulation.on("tick", () => {
+                    vLink
+                        .attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
+                    
+                    vNode
+                        .attr("transform", d => `translate(${d.x},${d.y})`);
+                });
+                
+            } else {
+                // Switch back to network view
+                currentView = "network";
+                document.getElementById("viewMode").textContent = "Network View";
+                document.getElementById("valueToggle").style.backgroundColor = "#9b59b6";
+                
+                if (valueSimulation) valueSimulation.stop();
+                
+                // Recreate network visualization
+                g.selectAll("*").remove();
+                recreateNetworkView();
+            }
+        }
+        
+        // Recreate network view
+        function recreateNetworkView() {
+            const newLink = g.append("g")
+                .selectAll("line")
+                .data(links)
+                .join("line")
+                .attr("class", "link")
+                .attr("stroke", "#999")
+                .attr("stroke-width", d => Math.sqrt(d.strength))
+                .attr("stroke-dasharray", d => 
+                    d.type === "secondary" || d.type === "meta" ? "5,5" : "none"
+                );
+            
+            const newNode = g.append("g")
+                .selectAll("g")
+                .data(nodes)
+                .join("g")
+                .attr("class", d => d.size > 20 ? "node concept-node" : "node")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+            
+            newNode.append("circle")
+                .attr("r", d => d.size)
+                .attr("fill", d => clusterColors[d.cluster])
+                .attr("stroke", "#fff");
+            
+            const newLabels = newNode.append("text")
+                .text(d => d.label)
+                .attr("x", 0)
+                .attr("y", d => d.size + 12)
+                .attr("text-anchor", "middle")
+                .style("display", d => d.size > 20 ? "block" : labelsVisible ? "block" : "none");
+            
+            // Update global references
+            link.remove();
+            link = newLink;
+            node.remove();
+            node = newNode;
+            labels.remove();
+            labels = newLabels;
+            
+            // Reattach mouse events
+            node.on("mouseover", function(event, d) {
+                tooltip.style("display", "block")
+                    .transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(`<strong>${d.label}</strong><br/>${d.def}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+                    
+                link.style("stroke-opacity", l => l.source === d || l.target === d ? 1 : 0.1);
+                node.style("opacity", n => {
+                    const connected = links.some(l => 
+                        (l.source === d && l.target === n) || 
+                        (l.target === d && l.source === n) ||
+                        n === d
+                    );
+                    return connected ? 1 : 0.3;
+                });
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .on("end", () => tooltip.style("display", "none"));
+                
+                if (!highlightedNode) {
+                    link.style("stroke-opacity", 0.3);
+                    node.style("opacity", 1);
+                }
+            });
+            
+            simulation.alpha(0.3).restart();
+        }
+
+        // Make functions globally accessible
+        window.toggleLabels = toggleLabels;
+        window.resetSimulation = resetSimulation;
+        window.updateLinkStrength = updateLinkStrength;
+        window.updateNodeCharge = updateNodeCharge;
+        window.searchLanguage = searchLanguage;
+        window.clearHighlight = clearHighlight;
+        window.toggleValueView = toggleValueView;
+    </script>
+</body>
+</html>

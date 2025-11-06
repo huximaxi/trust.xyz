@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmology & Cooperation - Game Theory Experiment</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Cosmology & Cooperation</h1>
+      <p class="subtitle">How do your deepest beliefs shape how you trust?</p>
+    </header>
+
+    <!-- PHASE 1: QUESTIONNAIRE -->
+    <div id="phase-questionnaire" class="phase active">
+      <div class="progress-bar">
+        <div id="question-progress" class="progress-fill" style="width: 0%"></div>
+      </div>
+      
+      <div id="question-container"></div>
+      
+      <div class="text-center mt-2">
+        <button id="next-question-btn" class="btn" style="display: none;">Next →</button>
+      </div>
+    </div>
+
+    <!-- PHASE 2: GAME -->
+    <div id="phase-game" class="phase">
+      <div class="progress-bar">
+        <div id="game-progress" class="progress-fill" style="width: 0%"></div>
+      </div>
+
+      <div class="score-display">
+        <div class="score-item">
+          <div class="score-label">Your Score</div>
+          <div id="player-score" class="score-value">0</div>
+        </div>
+        <div class="score-item">
+          <div class="score-label">Partner's Score</div>
+          <div id="opponent-score" class="score-value">0</div>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="round-info">
+          <div id="round-number" class="round-number">Round 1</div>
+          <div id="scenario-name" class="scenario-name"></div>
+        </div>
+
+        <div id="announcement" class="announcement" style="display: none;"></div>
+
+        <div class="partner-info">
+          <div>Playing with: <span id="partner-label" class="partner-label">Partner</span></div>
+        </div>
+
+        <div id="outcome-display" class="outcome-display" style="display: none;">
+          <div class="outcome-text">
+            You <span id="your-move"></span>, Partner <span id="partner-move"></span>
+          </div>
+          <div class="outcome-points">
+            <span id="round-result"></span>
+          </div>
+        </div>
+
+        <div class="choice-buttons">
+          <button id="cooperate-btn" class="choice-btn cooperate">
+            <div id="cooperate-text">Cooperate</div>
+          </button>
+          <button id="defect-btn" class="choice-btn defect">
+            <div id="defect-text">Defect</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3: REPORT -->
+    <div id="phase-report" class="phase">
+      <div class="report-section">
+        <h2>📊 Your Strategic Performance</h2>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Your Score</div>
+            <div id="final-player-score" class="stat-value">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Partner's Score</div>
+            <div id="final-opponent-score" class="stat-value">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">vs. Tit-for-Tat</div>
+            <div id="vs-tit-for-tat" class="stat-value">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Cooperation Rate</div>
+            <div id="cooperation-rate" class="stat-value">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <h2>🧠 Your Belief Profile</h2>
+        <div id="belief-profile-summary"></div>
+      </div>
+
+      <div class="report-section">
+        <h2>⚠️ Your Cognitive Biases</h2>
+        <div id="biases-container"></div>
+      </div>
+
+      <div class="report-section">
+        <h2>🏛️ Cosmological Matches</h2>
+        <div id="cosmology-matches"></div>
+      </div>
+
+      <div class="text-center mt-2">
+        <button id="restart-btn" class="btn">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import modules
+    import { QUESTIONNAIRE, getNextQuestion, shouldShowQuestion } from './questionnaire-data.js';
+    import { calculateBeliefProfile, analyzeBehavior, detectBiases, matchCosmologies } from './scoring-algorithms.js';
+    import { TrustGame, getFramedText, getScenarioAnnouncement, calculateComparisons } from './game-logic.js';
+
+    // Make QUESTIONNAIRE globally available for scoring algorithms
+    window.QUESTIONNAIRE = QUESTIONNAIRE;
+
+    // Game State
+    let currentPhase = 'questionnaire';
+    let currentQuestionId = 'q1';
+    let answers = {};
+    let beliefProfile = null;
+    let trustGame = null;
+    let gameData = [];
+
+    // Elements
+    const phases = {
+      questionnaire: document.getElementById('phase-questionnaire'),
+      game: document.getElementById('phase-game'),
+      report: document.getElementById('phase-report')
+    };
+
+    // Initialize
+    showQuestion(currentQuestionId);
+
+    // QUESTIONNAIRE PHASE
+    function showQuestion(questionId) {
+      const question = QUESTIONNAIRE[questionId];
+      if (!question) return;
+
+      const container = document.getElementById('question-container');
+      container.innerHTML = `
+        <div class="question-card">
+          <div class="question-section">${question.section}</div>
+          <div class="question-text">${question.text}</div>
+          <div class="options" id="options-container"></div>
+        </div>
+      `;
+
+      const optionsContainer = document.getElementById('options-container');
+      
+      if (question.type === 'single') {
+        question.options.forEach(option => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.textContent = option.text;
+          btn.onclick = () => selectOption(questionId, option.value);
+          optionsContainer.appendChild(btn);
+        });
+      } else if (question.type === 'slider') {
+        optionsContainer.innerHTML = `
+          <div style="padding: 2rem 1rem;">
+            <input type="range" id="slider-input" min="${question.min}" max="${question.max}" value="50" 
+                   style="width: 100%; height: 8px; border-radius: 5px; background: var(--color-primary);">
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-dim);">
+              <span>${question.labels[0]}</span>
+              <span>${question.labels[50]}</span>
+              <span>${question.labels[100]}</span>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('slider-input').oninput = (e) => {
+          answers[questionId] = parseInt(e.target.value);
+        };
+        
+        answers[questionId] = 50; // Default value
+        document.getElementById('next-question-btn').style.display = 'inline-block';
+        document.getElementById('next-question-btn').onclick = () => handleSliderNext(questionId);
+      }
+
+      updateProgress();
+    }
+
+    function selectOption(questionId, value) {
+      answers[questionId] = value;
+      
+      // Visual feedback
+      document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+      event.target.classList.add('selected');
+      
+      // Brief delay for feedback
+      setTimeout(() => {
+        const nextId = getNextQuestion(questionId, answers);
+        if (nextId && shouldShowQuestion(nextId, answers)) {
+          currentQuestionId = nextId;
+          showQuestion(nextId);
+        } else {
+          finishQuestionnaire();
+        }
+      }, 300);
+    }
+
+    function handleSliderNext(questionId) {
+      finishQuestionnaire();
+    }
+
+    function updateProgress() {
+      const totalQuestions = Object.keys(QUESTIONNAIRE).length;
+      const answered = Object.keys(answers).length;
+      const progress = (answered / totalQuestions) * 100;
+      document.getElementById('question-progress').style.width = `${progress}%`;
+    }
+
+    function finishQuestionnaire() {
+      beliefProfile = calculateBeliefProfile(answers);
+      console.log('Belief Profile:', beliefProfile);
+      startGame();
+    }
+
+    // GAME PHASE
+    function startGame() {
+      trustGame = new TrustGame(beliefProfile);
+      switchPhase('game');
+      showGameRound();
+    }
+
+    function showGameRound() {
+      if (trustGame.isGameOver()) {
+        finishGame();
+        return;
+      }
+
+      const currentScenario = trustGame.getCurrentScenario();
+      const framing = getFramedText(currentScenario, beliefProfile);
+      const announcement = getScenarioAnnouncement(currentScenario);
+      const progress = trustGame.getProgress();
+
+      // Update UI
+      document.getElementById('round-number').textContent = `Round ${progress.current + 1} of ${progress.total}`;
+      document.getElementById('scenario-name').textContent = currentScenario.name;
+      document.getElementById('game-progress').style.width = `${progress.percentage}%`;
+      
+      document.getElementById('cooperate-text').textContent = framing.cooperateText;
+      document.getElementById('defect-text').textContent = framing.defectText;
+      document.getElementById('partner-label').textContent = framing.partnerLabel;
+
+      // Show/hide announcement
+      if (announcement) {
+        document.getElementById('announcement').textContent = announcement;
+        document.getElementById('announcement').style.display = 'block';
+      } else {
+        document.getElementById('announcement').style.display = 'none';
+      }
+
+      // Hide outcome from previous round
+      document.getElementById('outcome-display').style.display = 'none';
+
+      // Enable buttons
+      document.getElementById('cooperate-btn').onclick = () => makeChoice('cooperate');
+      document.getElementById('defect-btn').onclick = () => makeChoice('defect');
+    }
+
+    function makeChoice(choice) {
+      const result = trustGame.playRound(choice);
+      
+      // Update scores
+      const totalPlayerScore = trustGame.getGameData().reduce((sum, r) => sum + r.playerPoints, 0);
+      const totalOpponentScore = trustGame.getGameData().reduce((sum, r) => sum + r.opponentPoints, 0);
+      
+      document.getElementById('player-score').textContent = totalPlayerScore;
+      document.getElementById('opponent-score').textContent = totalOpponentScore;
+
+      // Show outcome
+      document.getElementById('your-move').textContent = result.playerMove;
+      document.getElementById('partner-move').textContent = result.opponentMove;
+      
+      const pointsGained = result.playerPoints;
+      const resultElement = document.getElementById('round-result');
+      resultElement.textContent = `+${pointsGained} points`;
+      resultElement.className = 'outcome-points ' + (pointsGained >= 3 ? 'gained' : 'lost');
+      
+      document.getElementById('outcome-display').style.display = 'block';
+
+      // Continue to next round after delay
+      setTimeout(() => {
+        showGameRound();
+      }, 1500);
+    }
+
+    // REPORT PHASE
+    function finishGame() {
+      gameData = trustGame.getGameData();
+      const behavior = analyzeBehavior(gameData);
+      const biases = detectBiases(beliefProfile, behavior);
+      const cosmologies = matchCosmologies(beliefProfile, behavior);
+      const comparisons = calculateComparisons(gameData);
+
+      switchPhase('report');
+
+      // Performance stats
+      document.getElementById('final-player-score').textContent = comparisons.player;
+      document.getElementById('final-opponent-score').textContent = comparisons.opponent;
+      
+      const diff = comparisons.player - comparisons.titForTat;
+      document.getElementById('vs-tit-for-tat').textContent = (diff >= 0 ? '+' : '') + diff;
+      
+      document.getElementById('cooperation-rate').textContent = Math.round(behavior.cooperationRate) + '%';
+
+      // Belief profile summary
+      const profileSummary = document.getElementById('belief-profile-summary');
+      profileSummary.innerHTML = `
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Temporal Model</div>
+            <div class="stat-value" style="font-size: 1.2rem;">${beliefProfile.temporalModel}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Ontology</div>
+            <div class="stat-value" style="font-size: 1.2rem;">${beliefProfile.ontology}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Goal Oriented</div>
+            <div class="stat-value" style="font-size: 1.2rem;">${Math.round(beliefProfile.goalOriented)}/100</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Urgency</div>
+            <div class="stat-value" style="font-size: 1.2rem;">${Math.round(beliefProfile.urgency)}/100</div>
+          </div>
+        </div>
+      `;
+
+      // Biases
+      const biasesContainer = document.getElementById('biases-container');
+      if (biases.length === 0) {
+        biasesContainer.innerHTML = '<p style="color: var(--color-cooperate); text-align: center;">No major biases detected! Your strategy was well-balanced.</p>';
+      } else {
+        biasesContainer.innerHTML = biases.map(bias => `
+          <div class="bias-card">
+            <div class="bias-header">
+              <div class="bias-name">${bias.name}</div>
+              <div class="bias-severity ${bias.severity}">${bias.severity}</div>
+            </div>
+            <div class="bias-description">${bias.description}</div>
+            <div class="bias-details">
+              <p><strong>Cosmological Pattern:</strong> ${bias.cosmology}</p>
+              <p><strong>Mechanism:</strong> ${bias.mechanism}</p>
+              <p><strong>Real-World Impact:</strong></p>
+              <ul>
+                ${bias.realWorldImpact.map(impact => `<li>${impact}</li>`).join('')}
+              </ul>
+              <p><strong>Game Theory Truth:</strong> ${bias.gameTheoryTruth}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Cosmological matches
+      const cosmologyContainer = document.getElementById('cosmology-matches');
+      cosmologyContainer.innerHTML = cosmologies.slice(0, 3).map(match => `
+        <div class="cosmology-match">
+          <div class="cosmology-header">
+            <div class="cosmology-name">${match.name}</div>
+            <div class="cosmology-score">${match.score}% match</div>
+          </div>
+          <div class="cosmology-description">${match.description}</div>
+          <div class="cosmology-behavior"><strong>Predicted:</strong> ${match.predictedBehavior}</div>
+        </div>
+      `).join('');
+
+      // Restart button
+      document.getElementById('restart-btn').onclick = () => {
+        location.reload();
+      };
+    }
+
+    // PHASE MANAGEMENT
+    function switchPhase(phase) {
+      Object.values(phases).forEach(p => p.classList.remove('active'));
+      phases[phase].classList.add('active');
+      currentPhase = phase;
+    }
+  </script>
+</body>
+</html>
