@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Trust Explorations</title>
+    <title>trust.xyz — Trust as Infrastructure for Co-Intelligence</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="about.html" class="nav-link">About</a>
-            <div class="dropdown">
-                <a href="#" class="nav-link">Interactive Research ▼</a>
-                <div class="dropdown-content">
-                    <a href="experiments/semantic_network/index.html">Semantic Network Map</a>
-                    <a href="experiments/game%20theology/index.html">Game Theology</a>
+            <a href="index.html" class="logo">⟳ trust.xyz</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link">Explore ▼</a>
+                    <div class="dropdown-content">
+                        <a href="experiments/semantic_network/index.html">Semantic Network</a>
+                        <a href="experiments/game%20theology/index.html">Game Theology</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,47 +27,61 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- ASCII Art Header -->
-        <pre class="ascii-art">
- _____ ____  _   _ ____ _____   _______  _______ _     ___  ____   _ _____ ___ ___  _   _ ____  
-|_   _|  _ \| | | / ___|_   _| | ____\ \/ / ___ | |   / _ \|  _ \ / \|_   _|_ _/ _ \| \ | / ___| 
-  | | | |_) | | | \___ \ | |   |  _|  \  /| |_/ | |  | | | | |_) / _ \ | |  | | | | |  \| \___ \ 
-  | | |  _ <| |_| |___) || |   | |___ /  \|  __/| |__| |_| |  _ / ___ \| |  | | |_| | |\  |___) |
-  |_| |_| \_\\___/|____/ |_|   |_____/_/\_\_|   |_____\___/|_| /_/   \_\_| |___\___/|_| \_|____/ 
-        </pre>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1 class="hero-title">Trust as Infrastructure</h1>
+            <p class="hero-lead">When humans and AIs collaborate persistently, trust becomes the protocol that makes it work.</p>
+            <p class="hero-subtitle">
+                Trust isn't a feeling—it's a pattern, a shape, an infrastructure.<br>
+                We explore it through experiments, theory, and practice.
+            </p>
+        </section>
 
-        <!-- Welcome Message -->
-        <div class="welcome-box">
-            <h1 class="glitch">Welcome to Digital Trust Explorations</h1>
-            <p class="subtitle">A PhD Research Project</p>
-            <p class="description">
-                This site hosts interactive experiments and research tools exploring the nature of digital trust. 
-                Navigate through the menu above to discover semantic networks, interactive games, and more.
-        </div>
-
-        <!-- Quick Links -->
-        <div class="quick-links">
-            <h2>Quick Start</h2>
-            <div class="link-grid">
-                <a href="experiments/semantic_network/index.html" class="quick-link-card">
-                    <span class="icon">🕸️</span>
-                    <h3>Semantic Network Map</h3>
-                    <p>Explore semantic connections</p>
+        <!-- Experiments Grid -->
+        <section class="experiments-section">
+            <h2 class="section-title">Experiments</h2>
+            <div class="cards-grid">
+                <a href="experiments/semantic_network/index.html" class="card">
+                    <span class="card-icon">🗺️</span>
+                    <h3>Semantic Network</h3>
+                    <p>Explore the semantic topology of trust. Map connections between concepts, watch how meaning emerges from relation.</p>
+                    <span class="card-link">Explore Network →</span>
                 </a>
-                <a href="experiments/game%20theology/index.html" class="quick-link-card">
-                    <span class="icon">🎮</span>
+
+                <a href="experiments/game%20theology/index.html" class="card">
+                    <span class="card-icon">🎮</span>
                     <h3>Game Theology</h3>
-                    <p>Interactive trust experiment</p>
-                </a>
-                <a href="about.html" class="quick-link-card">
-                    <span class="icon">📚</span>
-                    <h3>About</h3>
-                    <p>Learn about this research</p>
+                    <p>Trust through play. An interactive experiment examining how cooperation, betrayal, and reciprocity shape human-AI interaction.</p>
+                    <span class="card-link">Play Experiment →</span>
                 </a>
             </div>
-        </div>
+        </section>
 
-        <!-- Pixel Animation Canvas -->
+        <!-- Loci Toolkit -->
+        <section class="loci-section">
+            <div class="loci-card">
+                <span class="card-icon">🔧</span>
+                <h3>Loci Toolkit</h3>
+                <p>Open-source infrastructure for co-intelligence. The practical tools that implement the trust patterns we explore.</p>
+                <a href="https://github.com/huximaxi/loci" target="_blank" rel="noopener noreferrer" class="loci-link">View Repository →</a>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section class="research-section">
+            <h2 class="section-title">📚 Research</h2>
+            <p>
+                We approach trust as <strong>complexity reduction in co-intelligence systems</strong>. Drawing on Luhmann's trust theory, Simondon's transindividuation, Bateson's ecology of mind, and stigmergy as a coordination principle, we develop a framework for understanding how persistent human-AI collaboration stabilizes around shared protocols and mutual predictability.
+            </p>
+            <p>
+                This isn't about AI "earning" trust or humans "granting" it. Trust emerges when both parties reduce the cognitive load of interaction—when the other becomes sufficiently predictable that collaboration requires less verification, less friction. Through auto-ethnographic research and interactive experiments, we trace the patterns of trust infrastructure: how signals work, where breakdowns happen, what makes certain protocols resilient.
+            </p>
+            <p class="research-note">
+                📖 Full paper forthcoming. This site documents the ongoing inquiry.
+            </p>
+        </section>
+
+        <!-- Pixel Animation Status -->
         <div class="animation-status">
             <span id="pixel-count">0</span> pixels collected
         </div>
@@ -72,8 +89,8 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Digital Trust Explorations | PhD Research Project</p>
-        <p class="footer-note">Built with ♥ and privacy in mind</p>
+        <p>trust.xyz — Built with ♥ and privacy in mind. 2024–2026.</p>
+        <p class="footer-note">No cookies. No tracking. No stored data.</p>
     </footer>
 
     <!-- Pixel confetti canvas -->
