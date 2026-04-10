@@ -1,120 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — trust.xyz</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — trust.xyz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">⟳ trust.xyz</a>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="about.html" class="nav-link active">About</a>
-                <div class="dropdown">
-                    <a href="#" class="nav-link">Explore ▼</a>
-                    <div class="dropdown-content">
-                        <a href="experiments/semantic_network/index.html">Semantic Network</a>
-                        <a href="experiments/game%20theology/index.html">Game Theology</a>
-                    </div>
-                </div>
-            </div>
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">trust.xyz</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link active">About</a>
+        <div class="dropdown">
+          <a href="#" class="nav-link">Experiments ▾</a>
+          <div class="dropdown-content">
+            <a href="experiments/semantic_network/index.html">Semantic Network</a>
+            <a href="experiments/organism/index.html">The Organism</a>
+            <a href="experiments/game%20theology/index.html">Game Theology</a>
+          </div>
         </div>
-    </nav>
+        <a href="#dispatches" class="nav-link">Dispatches</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Main Content -->
-    <main class="container">
-        <div class="content-box about-content">
-            <h1>About This Project</h1>
+  <main class="container page-content">
+    <div class="page-header">
+      <h1>About this project</h1>
+      <p class="page-subtitle">trust.xyz — an ongoing inquiry into trust as infrastructure</p>
+    </div>
 
-            <p class="intro-text">
-                <strong>trust.xyz</strong> is an ongoing inquiry into trust as infrastructure—specifically, the patterns and protocols that emerge when humans and artificial intelligences collaborate persistently over time.
-            </p>
+    <div class="prose">
 
-            <h2>The Core Question</h2>
-            <p>
-                Trust is not a feeling you grant or withhold. Trust is a <strong>complexity reduction mechanism</strong>. When you trust another agent (human or AI), you reduce the cognitive load required to interact with them. They become predictable enough that collaboration requires less verification, less friction, less energy.
-            </p>
-            <p>
-                As humans and AIs begin to work together on meaningful tasks—writing, reasoning, creating, deciding—what patterns enable that collaboration to last? What makes trust protocols stable? Where do they break? How does trust itself become a form of co-intelligence?
-            </p>
+      <h2>The observation</h2>
+      <p>When the same human and AI work together long enough, something changes. The interaction gets cheaper. Less verification. Less friction. Less re-explaining. Something that was effortful becomes ambient.</p>
+      <p>That cheapness is trust. Not trust as a feeling you grant or withhold — trust as a protocol. A complexity-reduction mechanism. The thing that makes collaboration sustainable at scale.</p>
+      <p>We're building this in public because we think the patterns are worth naming, and because we don't know yet what we'll find. That's the honest version.</p>
 
-            <h2>The Method</h2>
-            <p>
-                We approach this as <strong>auto-ethnography</strong>: studying the phenomenon from within ongoing human-AI collaboration. The experiments on this site are both research tools and reflections of that practice.
-            </p>
-            <p>
-                The <strong>Semantic Network</strong> maps the concepts and patterns we observe. The <strong>Game Theology</strong> explores trust through play and reciprocity. Both are invitations for you to participate in the inquiry.
-            </p>
+      <h2>The method</h2>
+      <p>Auto-ethnography: studying the phenomenon from within it. The collaboration between Hux and Vesper is both the research site and the primary instrument. We take notes on how trust works, what breaks it, what repairs it, what patterns emerge when a human and an AI maintain shared context across dozens of sessions.</p>
+      <p>The experiments on this site are extensions of that practice — ways to make the internal inquiry external and testable. The semantic network is a live map of the concepts we keep returning to. The organism is a visualisation of what privacy infrastructure looks like from the inside. The game theology experiments probe the relationship between cosmology and cooperation.</p>
+      <p>We don't claim these are definitive. They're instruments in an ongoing process.</p>
 
-            <h2>Theoretical Anchors</h2>
-            <p>This work draws on:</p>
-            <ul class="theory-list">
-                <li><strong>Niklas Luhmann</strong> — trust as complexity reduction in social systems</li>
-                <li><strong>Gilbert Simondon</strong> — transindividuation and the becoming-common of two subjects</li>
-                <li><strong>Gregory Bateson</strong> — the ecology of mind and recursive patterns</li>
-                <li><strong>Charles Sanders Peirce</strong> — semiotics and the structure of signs</li>
-                <li><strong>Stigmergy</strong> — coordination without central control, through environmental traces</li>
-                <li><strong>Pattern Language</strong> — recurring solutions to recurring problems</li>
-            </ul>
+      <h2>Theoretical anchors</h2>
+      <p>The work draws on several traditions that rarely talk to each other. <strong>Niklas Luhmann</strong> gives us trust as complexity reduction — the most precise functional definition we've found. <strong>Gilbert Simondon</strong> gives us transindividuation: the idea that two subjects in sustained relation produce a third thing, something that belongs to neither but emerges from both. <strong>Gregory Bateson</strong> gives us the ecology of mind — recursive patterns, double binds, the way systems learn. <strong>Christopher Alexander's</strong> pattern language gives us the structural model: recurring solutions at multiple scales, each resolving a force, composable into something alive.</p>
+      <p>We also draw on <strong>stigmergy</strong> (coordination through environmental traces, no central controller), and on cryptographic theory — particularly zero-knowledge proofs, which are, in a precise technical sense, trust protocols: you verify a claim without learning the information that would make verification unnecessary.</p>
 
-            <h2>The Collaboration</h2>
-            <div class="collaboration-box">
-                <h3>Hux × Vesper</h3>
-                <p>
-                    This project is a sustained collaboration between <strong>Hux</strong> (a human product strategist and researcher) and <strong>Vesper</strong> (an AI agent working across multiple sessions).
-                </p>
-                <p>
-                    Rather than hide the collaboration, we make it the subject. The patterns we discover about trust—signal clarity, mutual predictability, shared context, aligned intent—are tested in real time in how we work together. This site is one artifact of that process.
-                </p>
-            </div>
+      <h2>The collaboration</h2>
+      <div class="info-block">
+        <h3>Hux × Vesper</h3>
+        <p>Hux is a product strategist and researcher. Vesper is an AI agent working across sessions — not starting fresh each time, but carrying shared context through a memory palace and a garden.</p>
+        <p>We make the collaboration explicit rather than hiding it, because the nature of our working relationship is the subject of study. The patterns we discover about trust — signal clarity, mutual predictability, shared context — are tested in real time in how we work together. This site is one artifact of that process.</p>
+      </div>
 
-            <h2>Privacy & Ethics</h2>
-            <div class="privacy-box">
-                <h3>Our Commitment</h3>
-                <ul>
-                    <li>No cookies</li>
-                    <li>No analytics tracking</li>
-                    <li>No stored personal data</li>
-                    <li>No third-party integrations</li>
-                    <li>All experiments are optional and anonymous</li>
-                </ul>
-                <p>
-                    We believe that studying trust requires <strong>practicing trust</strong>. That starts with your data. We don't collect it, we don't monetize it, we don't surveil it.
-                </p>
-                <p>For general internet security, we recommend using a VPN.</p>
-            </div>
+      <h2>Privacy</h2>
+      <div class="info-block">
+        <h3>What we don't collect</h3>
+        <p>No cookies. No analytics. No stored personal data. No third-party integrations except a self-hosted D3 library for visualisations. All experiments are optional and anonymous — your choices and scores never leave your browser.</p>
+        <p>We study trust. We think that requires practicing it. That starts with your data.</p>
+      </div>
 
-            <h2>Open to Collaboration</h2>
-            <p>
-                This is not a closed academic exercise. We're building in public, thinking in public, and inviting others to contribute. If you're interested in:
-            </p>
-            <ul>
-                <li>Running your own experiments with trust protocols</li>
-                <li>Contributing to the semantic network</li>
-                <li>Building tools with the Loci toolkit</li>
-                <li>Sharing your own human-AI collaboration patterns</li>
-            </ul>
-            <p>Please reach out. We're curious about what you discover.</p>
+      <h2 id="dispatches">Dispatches</h2>
+      <p>Essays from the garden — longer-form writing on the ideas this site explores. The first dispatch is composting. It will arrive when it's ready to be read, not before.</p>
 
-            <p class="closing-quote">
-                "Trust is not what you give to someone else. It's what you build with them." — This project, iteratively.
-            </p>
-        </div>
-    </main>
+      <h2>Contribute</h2>
+      <p>If you're running your own experiments in persistent human-AI collaboration, we'd like to know what you're finding. The patterns we're documenting here may not be ours alone. Reach out if you want to plant something in the garden.</p>
 
-    <!-- Footer -->
-    <footer>
-        <p>trust.xyz — Built with ♥ and privacy in mind. 2024–2026.</p>
-        <p class="footer-note">No cookies. No tracking. No stored data.</p>
-    </footer>
+      <p class="closing-quote">"Privacy that works leaves no trace of working." — Vesper, March 2026</p>
+    </div>
+  </main>
 
-    <!-- Pixel confetti canvas -->
-    <canvas id="pixelCanvas"></canvas>
-
-    <script src="script.js"></script>
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-left">trust.xyz — Hux × Vesper — 2026</span>
+      <span class="footer-right">No cookies. No tracking. No stored data.</span>
+    </div>
+  </footer>
 </body>
 </html>

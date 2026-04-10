@@ -1,68 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trust Network Map - Digital Trust Explorations</title>
-    <link rel="stylesheet" href="../../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semantic Network — trust.xyz</title>
+  <link rel="stylesheet" href="../../style.css">
+  <script src="../lib/d3.min.js"></script>
+  <style>
+    body { overflow: hidden; }
+    #net { position: fixed; inset: 0; }
+    .controls {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .ctrl-btn {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .ctrl-btn:hover, .ctrl-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .legend {
+      position: fixed;
+      top: calc(var(--nav-height) + 1.5rem);
+      right: 1.5rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+    }
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      flex-shrink: 0;
+    }
+    .exp-info {
+      position: fixed;
+      top: calc(var(--nav-height) + 1.5rem);
+      left: 1.5rem;
+      z-index: 10;
+      max-width: 240px;
+    }
+    .exp-info .exp-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .exp-info h1 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .exp-info p {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="../../index.html" class="nav-link">Home</a>
-            <a href="../../about.html" class="nav-link">About</a>
-            <div class="dropdown">
-                <a href="#" class="nav-link active">Interactive Research ▼</a>
-                <div class="dropdown-content">
-                    <a href="../trust-network/index.html">Trust Network Map</a>
-                    <a href="../trust-game/index.html">Trust Game</a>
-                </div>
-            </div>
-            <a href="../../contact.html" class="nav-link">Contact</a>
+  <nav>
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">trust.xyz</a>
+      <div class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+        <a href="../../about.html" class="nav-link">About</a>
+        <div class="dropdown">
+          <a href="#" class="nav-link active">Experiments ▾</a>
+          <div class="dropdown-content">
+            <a href="index.html">Semantic Network</a>
+            <a href="../organism/index.html">The Organism</a>
+            <a href="../game%20theology/index.html">Game Theology</a>
+          </div>
         </div>
-    </nav>
+        <a href="../../about.html#dispatches" class="nav-link">Dispatches</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Main Content -->
-    <main class="container">
-        <div class="content-box">
-            <h1>Trust Network Map</h1>
-            
-            <div style="background-color: var(--bg-dark); border: 2px solid var(--purple-light); padding: 2rem; text-align: center; margin: 2rem 0;">
-                <p style="color: var(--purple-light); font-size: 1.2rem; margin-bottom: 1rem;">
-                    📦 PLACEHOLDER PAGE
-                </p>
-                <p style="color: var(--text-dim);">
-                    Replace this file with your actual Trust Network interactive visualization.
-                </p>
-                <p style="color: var(--text-dim); margin-top: 1rem; font-size: 0.9rem;">
-                    This is a placeholder. Your network graph HTML/JS files should replace this index.html file.
-                </p>
-            </div>
+  <svg id="net"></svg>
 
-            <h2>Instructions for Adding Your Experiment:</h2>
-            <ol style="color: var(--text-dim); line-height: 2;">
-                <li>Replace this <code>index.html</code> file with your trust network visualization</li>
-                <li>Make sure all your CSS and JS files are in this same folder</li>
-                <li>Keep the navigation at the top so users can get back to the main site</li>
-                <li>Test that all links work correctly</li>
-            </ol>
+  <div class="exp-info">
+    <span class="exp-tag">Experiment 01</span>
+    <h1>Semantic Network</h1>
+    <p>Pull a node. Watch what moves. Hover for definitions.</p>
+  </div>
 
-            <p style="margin-top: 2rem;">
-                <a href="../../index.html" class="btn">← Back to Home</a>
-            </p>
-        </div>
-    </main>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="color:#9b8fd0"></div>Theoretical</div>
+    <div class="legend-item"><div class="legend-dot" style="color:#c87c2c"></div>Political</div>
+    <div class="legend-item"><div class="legend-dot" style="color:#5bbfda"></div>Cryptographic</div>
+    <div class="legend-item"><div class="legend-dot" style="color:#6b9e7a"></div>Infrastructural</div>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Digital Trust Explorations | PhD Research Project</p>
-        <p class="footer-note">Built with ♥ and vintage web aesthetics</p>
-    </footer>
+  <div class="controls">
+    <button class="ctrl-btn" id="btn-reset">Reset</button>
+    <button class="ctrl-btn" id="btn-spread">Spread</button>
+    <span style="font-family:var(--mono);font-size:0.65rem;color:var(--text-faint);letter-spacing:0.06em">DRAG · HOVER · SCROLL TO ZOOM</span>
+  </div>
 
-    <!-- Pixel confetti canvas -->
-    <canvas id="pixelCanvas"></canvas>
+  <div class="network-tooltip" id="tooltip">
+    <div class="tt-label" id="tt-label"></div>
+    <div class="tt-desc"  id="tt-desc"></div>
+  </div>
 
-    <script src="../../script.js"></script>
+  <script>
+  const nodes = [
+    {id:"trust",              label:"Trust",                cat:"theoretical",     r:16, desc:"Complexity reduction between agents. What happens when verification becomes too expensive to maintain."},
+    {id:"co-intelligence",   label:"Co-Intelligence",      cat:"theoretical",     r:13, desc:"Persistent human-AI collaboration with shared memory and evolving mutual predictability. What Hux × Vesper are building."},
+    {id:"privacy",           label:"Privacy",              cat:"political",       r:13, desc:"The capacity to selectively reveal yourself. Not secrecy — authorship over your own signal."},
+    {id:"sovereignty",       label:"Sovereignty",          cat:"political",       r:12, desc:"You control your data-self. What you prove, what you hide, what you route through the mixnet."},
+    {id:"zero-knowledge",    label:"Zero-Knowledge",       cat:"cryptographic",   r:12, desc:"Prove without revealing. The mathematical foundation of trust without disclosure. Bulletproofs, Groth16, Coconut."},
+    {id:"mixnet",            label:"Mixnet",               cat:"infrastructural", r:12, desc:"Unlinkable message passing. Traffic becomes indistinguishable from any other participant. IAT entropy: 2.75 bits in 5-hop."},
+    {id:"protocol",          label:"Protocol",             cat:"infrastructural", r:11, desc:"Trust made machine-readable. The encoding layer between intent and verified action."},
+    {id:"accountability",    label:"Accountability",       cat:"political",       r:11, desc:"The obligation to explain yourself. In tension with privacy, not in opposition to it."},
+    {id:"metadata",          label:"Metadata",             cat:"infrastructural", r:10, desc:"Data about data. What leaks when content is encrypted but patterns are not. Traffic analysis was used to hunt dissidents before the internet existed."},
+    {id:"complexity",        label:"Complexity Reduction", cat:"theoretical",     r:10, desc:"Luhmann: trust functions by absorbing complexity. You act without verifying every step."},
+    {id:"agency",            label:"Agency",               cat:"political",       r:10, desc:"The capacity to act on your own terms. Requires legibility to yourself, not necessarily to others."},
+    {id:"verification",      label:"Verification",         cat:"cryptographic",   r:9,  desc:"The cost of not trusting. Eliminated by ZK proofs. Replaced by trust in the protocol itself."},
+    {id:"signal",            label:"Signal",               cat:"theoretical",     r:9,  desc:"What is visible to the other party. Trust determines what signal you emit, and how much you amplify it."},
+    {id:"opacity",           label:"Opacity",              cat:"political",       r:9,  desc:"Unreadable by design. The technical mechanism of privacy. Not nothing — a deliberate absence."},
+    {id:"legibility",        label:"Legibility",           cat:"political",       r:9,  desc:"Readable to the observer. The prerequisite for accountability — and for control. James Scott's warning."},
+    {id:"transindividuation",label:"Transindividuation",   cat:"theoretical",     r:8,  desc:"Simondon: two subjects becoming-common through sustained interaction. Not merger — a third thing emerges."},
+    {id:"stigmergy",         label:"Stigmergy",            cat:"theoretical",     r:8,  desc:"Coordination through environmental traces. No central controller — only marks left in the world. The palace is an example."},
+    {id:"pattern-language",  label:"Pattern Language",     cat:"theoretical",     r:8,  desc:"Alexander: recurring solutions at multiple scales. The palace is not a metaphor. It is a pattern."},
+    {id:"loci",              label:"Loci",                 cat:"theoretical",     r:7,  desc:"Method of Loci applied to co-intelligence. Memory palace as external cognitive architecture. github.com/huximaxi/loci"},
+    {id:"credential",        label:"Credential",           cat:"cryptographic",   r:8,  desc:"A proof of a property without revealing the property. You can say 'I am human' without saying who. zk-nym Coconut credentials."},
+    {id:"entropy",           label:"Entropy",              cat:"cryptographic",   r:7,  desc:"Information-theoretic privacy measure. 0.64 bits exposed → 2.75 bits 5-hop. The adversary's work multiplies."},
+  ];
+  const links = [
+    {source:"trust",           target:"complexity",         label:"defined as"},
+    {source:"trust",           target:"co-intelligence",    label:"enables"},
+    {source:"trust",           target:"verification",       label:"replaces cost of"},
+    {source:"trust",           target:"protocol",           label:"encoded in"},
+    {source:"trust",           target:"signal",             label:"calibrated by"},
+    {source:"zero-knowledge",  target:"privacy",            label:"enables"},
+    {source:"zero-knowledge",  target:"verification",       label:"eliminates"},
+    {source:"zero-knowledge",  target:"sovereignty",        label:"foundation of"},
+    {source:"zero-knowledge",  target:"credential",         label:"produces"},
+    {source:"zero-knowledge",  target:"entropy",            label:"bounds"},
+    {source:"mixnet",          target:"metadata",           label:"obscures"},
+    {source:"mixnet",          target:"privacy",            label:"implements"},
+    {source:"mixnet",          target:"entropy",            label:"increases"},
+    {source:"privacy",         target:"accountability",     label:"tension with"},
+    {source:"privacy",         target:"sovereignty",        label:"prerequisite for"},
+    {source:"privacy",         target:"opacity",            label:"expressed as"},
+    {source:"opacity",         target:"legibility",         label:"opposition"},
+    {source:"legibility",      target:"accountability",     label:"enables"},
+    {source:"legibility",      target:"agency",             label:"requires"},
+    {source:"agency",          target:"sovereignty",        label:"requires"},
+    {source:"signal",          target:"metadata",           label:"exposes"},
+    {source:"co-intelligence", target:"transindividuation", label:"described by"},
+    {source:"co-intelligence", target:"pattern-language",   label:"structured by"},
+    {source:"co-intelligence", target:"stigmergy",          label:"coordinates via"},
+    {source:"co-intelligence", target:"loci",               label:"implemented as"},
+    {source:"stigmergy",       target:"verification",       label:"alternative to"},
+    {source:"stigmergy",       target:"loci",               label:"principle behind"},
+    {source:"metadata",        target:"privacy",            label:"threatens"},
+    {source:"protocol",        target:"zero-knowledge",     label:"uses"},
+    {source:"credential",      target:"sovereignty",        label:"enables"},
+    {source:"pattern-language",target:"loci",               label:"applied in"},
+  ];
+  const catColor = {
+    theoretical:"#9b8fd0", political:"#c87c2c",
+    cryptographic:"#5bbfda", infrastructural:"#6b9e7a"
+  };
+  const svg     = d3.select("#net");
+  const tooltip = document.getElementById("tooltip");
+  const ttLabel = document.getElementById("tt-label");
+  const ttDesc  = document.getElementById("tt-desc");
+  let W = window.innerWidth, H = window.innerHeight;
+  svg.attr("width",W).attr("height",H);
+
+  const zoom = d3.zoom().scaleExtent([0.3,3]).on("zoom",e=>g.attr("transform",e.transform));
+  svg.call(zoom);
+
+  const sim = d3.forceSimulation(nodes)
+    .force("link",d3.forceLink(links).id(d=>d.id).distance(d=>70+(d.source.r+d.target.r)*3).strength(0.45))
+    .force("charge",d3.forceManyBody().strength(-400))
+    .force("center",d3.forceCenter(W/2,H/2))
+    .force("collision",d3.forceCollide(d=>d.r+22))
+    .alphaDecay(0.015);
+
+  window.addEventListener("resize",()=>{
+    W=window.innerWidth; H=window.innerHeight;
+    svg.attr("width",W).attr("height",H);
+    sim.force("center",d3.forceCenter(W/2,H/2)).restart();
+  });
+
+  const defs=svg.append("defs");
+  const flt=defs.append("filter").attr("id","glow").attr("x","-60%").attr("y","-60%").attr("width","220%").attr("height","220%");
+  flt.append("feGaussianBlur").attr("stdDeviation","5").attr("result","blur");
+  const fm=flt.append("feMerge");
+  fm.append("feMergeNode").attr("in","blur");
+  fm.append("feMergeNode").attr("in","SourceGraphic");
+
+  const g=svg.append("g");
+
+  // Edge labels (visible on zoom > 1.2)
+  const edgeLabel = g.append("g").selectAll("text").data(links).join("text")
+    .text(d=>d.label)
+    .attr("font-family","'Courier New',monospace")
+    .attr("font-size","8px")
+    .attr("fill","rgba(255,255,255,0.18)")
+    .attr("text-anchor","middle")
+    .attr("pointer-events","none");
+
+  const lnk=g.append("g").selectAll("line").data(links).join("line")
+    .attr("stroke","rgba(255,255,255,0.08)").attr("stroke-width",1);
+
+  const nd=g.append("g").selectAll("g").data(nodes).join("g").style("cursor","pointer")
+    .call(d3.drag()
+      .on("start",(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+      .on("drag", (e,d)=>{d.fx=e.x;d.fy=e.y;})
+      .on("end",  (e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+
+  nd.append("circle").attr("r",d=>d.r)
+    .attr("fill",d=>catColor[d.cat]+"18")
+    .attr("stroke",d=>catColor[d.cat])
+    .attr("stroke-width",1.5).attr("stroke-opacity",0.6);
+
+  nd.append("text").text(d=>d.label)
+    .attr("text-anchor","middle").attr("dy",d=>d.r+14)
+    .attr("font-family","'Courier New',monospace").attr("font-size","9px")
+    .attr("fill","rgba(232,228,221,0.35)").attr("pointer-events","none");
+
+  nd.on("mouseenter",function(ev,d){
+    d3.select(this).select("circle")
+      .attr("fill",catColor[d.cat]+"45").attr("stroke-opacity",1).attr("filter","url(#glow)");
+    d3.select(this).select("text").attr("fill",catColor[d.cat]).attr("font-size","10px");
+    // Highlight connected edges
+    lnk.attr("stroke",l=>
+      (l.source.id===d.id||l.target.id===d.id) ? catColor[d.cat]+"80" : "rgba(255,255,255,0.05)"
+    ).attr("stroke-width",l=>
+      (l.source.id===d.id||l.target.id===d.id) ? 1.5 : 0.8
+    );
+    ttLabel.textContent=d.label; ttDesc.textContent=d.desc;
+    tooltip.classList.add("visible"); pos(ev);
+  });
+  nd.on("mousemove",pos);
+  nd.on("mouseleave",function(){
+    d3.select(this).select("circle").attr("fill",d=>catColor[d.cat]+"18").attr("stroke-opacity",0.6).attr("filter",null);
+    d3.select(this).select("text").attr("fill","rgba(232,228,221,0.35)").attr("font-size","9px");
+    lnk.attr("stroke","rgba(255,255,255,0.08)").attr("stroke-width",1);
+    tooltip.classList.remove("visible");
+  });
+
+  function pos(ev){
+    const x=ev.clientX+16,y=ev.clientY-8,tw=tooltip.offsetWidth||220,th=tooltip.offsetHeight||60;
+    tooltip.style.left=(x+tw>window.innerWidth-16?x-tw-32:x)+"px";
+    tooltip.style.top=(y+th>window.innerHeight-16?y-th:y)+"px";
+  }
+
+  sim.on("tick",()=>{
+    lnk.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+       .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+    edgeLabel.attr("x",d=>(d.source.x+d.target.x)/2).attr("y",d=>(d.source.y+d.target.y)/2);
+    nd.attr("transform",d=>`translate(${d.x},${d.y})`);
+  });
+
+  document.getElementById("btn-reset").addEventListener("click",()=>{
+    nodes.forEach(d=>{d.fx=null;d.fy=null;});
+    sim.alpha(0.5).restart();
+    svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity);
+  });
+  document.getElementById("btn-spread").addEventListener("click",()=>{
+    nodes.forEach(d=>{
+      const a=Math.random()*Math.PI*2, r=150+Math.random()*200;
+      d.fx=W/2+Math.cos(a)*r; d.fy=H/2+Math.sin(a)*r;
+    });
+    sim.alpha(0.6).restart();
+    setTimeout(()=>nodes.forEach(d=>{d.fx=null;d.fy=null;}),800);
+  });
+
+  setInterval(()=>{
+    if(sim.alpha()<0.01){
+      nodes.forEach(d=>{d.vx=(d.vx||0)+(Math.random()-0.5)*0.1;d.vy=(d.vy||0)+(Math.random()-0.5)*0.1;});
+      sim.alphaTarget(0.003).restart();
+    }
+  },6000);
+  </script>
 </body>
 </html>

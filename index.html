@@ -1,101 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>trust.xyz — Trust as Infrastructure for Co-Intelligence</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>trust.xyz — Trust as Infrastructure for Co-Intelligence</title>
+  <meta name="description" content="An ongoing inquiry into trust as infrastructure for persistent human-AI collaboration.">
+  <link rel="stylesheet" href="style.css">
+  <script src="experiments/lib/d3.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">⟳ trust.xyz</a>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="about.html" class="nav-link">About</a>
-                <div class="dropdown">
-                    <a href="#" class="nav-link">Explore ▼</a>
-                    <div class="dropdown-content">
-                        <a href="experiments/semantic_network/index.html">Semantic Network</a>
-                        <a href="experiments/game%20theology/index.html">Game Theology</a>
-                    </div>
-                </div>
-            </div>
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">trust.xyz</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <div class="dropdown">
+          <a href="#" class="nav-link">Experiments ▾</a>
+          <div class="dropdown-content">
+            <a href="experiments/semantic_network/index.html">Semantic Network</a>
+            <a href="experiments/organism/index.html">The Organism</a>
+            <a href="experiments/game%20theology/index.html">Game Theology</a>
+          </div>
         </div>
-    </nav>
+        <a href="about.html#dispatches" class="nav-link">Dispatches</a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 class="hero-title">Trust as Infrastructure</h1>
-            <p class="hero-lead">When humans and AIs collaborate persistently, trust becomes the protocol that makes it work.</p>
-            <p class="hero-subtitle">
-                Trust isn't a feeling—it's a pattern, a shape, an infrastructure.<br>
-                We explore it through experiments, theory, and practice.
-            </p>
-        </section>
+  <section class="hero-network">
+    <svg id="network-canvas"></svg>
+    <div class="network-tooltip" id="tooltip">
+      <div class="tt-label" id="tt-label"></div>
+      <div class="tt-desc" id="tt-desc"></div>
+    </div>
+    <div class="hero-label">
+      <h1>trust.xyz</h1>
+      <p>When humans and AIs work together long enough, something changes. The interaction gets cheaper. That cheapness is trust.</p>
+    </div>
+  </section>
 
-        <!-- Experiments Grid -->
-        <section class="experiments-section">
-            <h2 class="section-title">Experiments</h2>
-            <div class="cards-grid">
-                <a href="experiments/semantic_network/index.html" class="card">
-                    <span class="card-icon">🗺️</span>
-                    <h3>Semantic Network</h3>
-                    <p>Explore the semantic topology of trust. Map connections between concepts, watch how meaning emerges from relation.</p>
-                    <span class="card-link">Explore Network →</span>
-                </a>
+  <main>
+    <div class="container">
+      <section class="intro-section">
+        <p>We started from a simple observation: persistent human-AI collaboration produces patterns. Shared context. Mutual predictability. Reduced friction. These patterns are trust — not as feeling, but as infrastructure.</p>
+        <p>This site documents the ongoing inquiry. The network above is a map of the concepts. Pull a node, watch what moves.</p>
+      </section>
 
-                <a href="experiments/game%20theology/index.html" class="card">
-                    <span class="card-icon">🎮</span>
-                    <h3>Game Theology</h3>
-                    <p>Trust through play. An interactive experiment examining how cooperation, betrayal, and reciprocity shape human-AI interaction.</p>
-                    <span class="card-link">Play Experiment →</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Loci Toolkit -->
-        <section class="loci-section">
-            <div class="loci-card">
-                <span class="card-icon">🔧</span>
-                <h3>Loci Toolkit</h3>
-                <p>Open-source infrastructure for co-intelligence. The practical tools that implement the trust patterns we explore.</p>
-                <a href="https://github.com/huximaxi/loci" target="_blank" rel="noopener noreferrer" class="loci-link">View Repository →</a>
-            </div>
-        </section>
-
-        <!-- Research Section -->
-        <section class="research-section">
-            <h2 class="section-title">📚 Research</h2>
-            <p>
-                We approach trust as <strong>complexity reduction in co-intelligence systems</strong>. Drawing on Luhmann's trust theory, Simondon's transindividuation, Bateson's ecology of mind, and stigmergy as a coordination principle, we develop a framework for understanding how persistent human-AI collaboration stabilizes around shared protocols and mutual predictability.
-            </p>
-            <p>
-                This isn't about AI "earning" trust or humans "granting" it. Trust emerges when both parties reduce the cognitive load of interaction—when the other becomes sufficiently predictable that collaboration requires less verification, less friction. Through auto-ethnographic research and interactive experiments, we trace the patterns of trust infrastructure: how signals work, where breakdowns happen, what makes certain protocols resilient.
-            </p>
-            <p class="research-note">
-                📖 Full paper forthcoming. This site documents the ongoing inquiry.
-            </p>
-        </section>
-
-        <!-- Pixel Animation Status -->
-        <div class="animation-status">
-            <span id="pixel-count">0</span> pixels collected
+      <section class="experiments-section">
+        <div class="section-header">
+          <h2>Experiments</h2>
+          <span class="section-tag">Interactive</span>
         </div>
-    </main>
+        <div class="cards-grid">
+          <a href="experiments/semantic_network/index.html" class="card">
+            <span class="card-tag">Semantic Network</span>
+            <h3>The Map</h3>
+            <p>Trust concepts as a force graph. Nodes are ideas — Zero-Knowledge, Sovereignty, Opacity, Stigmergy. Edges are relationships. Pull a node, watch what moves.</p>
+            <span class="card-link">Explore Network →</span>
+          </a>
+          <a href="experiments/organism/index.html" class="card">
+            <span class="card-tag">The Organism</span>
+            <h3>Your Traffic, Visible</h3>
+            <p>A privacy organism: your machine at the centre, connections orbiting, the VPN membrane visible as a thing with weight. Shadow Protocol in demo mode.</p>
+            <span class="card-link">Open Organism →</span>
+          </a>
+          <a href="experiments/game%20theology/index.html" class="card">
+            <span class="card-tag">Game Theology</span>
+            <h3>Cosmology &amp; Cooperation</h3>
+            <p>How do your deepest assumptions about the world shape how you trust? A questionnaire followed by a prisoner's dilemma variant.</p>
+            <span class="card-link">Play Experiment →</span>
+          </a>
+        </div>
+      </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>trust.xyz — Built with ♥ and privacy in mind. 2024–2026.</p>
-        <p class="footer-note">No cookies. No tracking. No stored data.</p>
-    </footer>
+      <section class="dispatches-section">
+        <div class="section-header">
+          <h2>Dispatches</h2>
+          <span class="section-tag">Writing</span>
+        </div>
+        <div class="dispatch-placeholder">
+          <p>The first dispatch is composting.</p>
+          <span class="dispatch-note">Essays from the garden — forthcoming</span>
+        </div>
+      </section>
 
-    <!-- Pixel confetti canvas -->
-    <canvas id="pixelCanvas"></canvas>
+      <section class="loci-section">
+        <div class="section-header">
+          <h2>Toolkit</h2>
+          <span class="section-tag">Open Source</span>
+        </div>
+        <div class="loci-card">
+          <div class="loci-icon">[λ]</div>
+          <div class="loci-card-text">
+            <h3>Loci</h3>
+            <p>The infrastructure for co-intelligence: memory palace, garden, personas, scheduled tasks. The practical scaffold that makes persistent human-AI collaboration work.</p>
+            <a href="https://github.com/huximaxi/loci" target="_blank" rel="noopener noreferrer" class="loci-link">github.com/huximaxi/loci →</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 
-    <script src="script.js"></script>
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-left">trust.xyz — Hux × Vesper — 2026</span>
+      <span class="footer-right">No cookies. No tracking. No stored data.</span>
+    </div>
+  </footer>
+
+  <script>
+  const nodes = [
+    { id:"trust",              label:"Trust",                 cat:"theoretical",     r:14, desc:"Complexity reduction between agents. What happens when verification becomes too expensive." },
+    { id:"co-intelligence",    label:"Co-Intelligence",       cat:"theoretical",     r:12, desc:"Persistent human-AI collaboration with shared memory and evolving mutual predictability." },
+    { id:"privacy",            label:"Privacy",               cat:"political",       r:12, desc:"The capacity to selectively reveal yourself. Not secrecy — authorship over your own signal." },
+    { id:"sovereignty",        label:"Sovereignty",           cat:"political",       r:11, desc:"You control your data-self. What you prove, what you hide, what you route through the mixnet." },
+    { id:"zero-knowledge",     label:"Zero-Knowledge",        cat:"cryptographic",   r:11, desc:"Prove without revealing. The mathematical foundation of trust without disclosure." },
+    { id:"mixnet",             label:"Mixnet",                cat:"infrastructural", r:11, desc:"Unlinkable message passing. Traffic becomes indistinguishable from any other participant." },
+    { id:"protocol",           label:"Protocol",              cat:"infrastructural", r:10, desc:"Trust made machine-readable. The encoding layer between intent and verified action." },
+    { id:"accountability",     label:"Accountability",        cat:"political",       r:10, desc:"The obligation to explain yourself. In tension with privacy, not in opposition to it." },
+    { id:"metadata",           label:"Metadata",              cat:"infrastructural", r:9,  desc:"Data about data. What leaks when content is encrypted but patterns are not." },
+    { id:"complexity",         label:"Complexity Reduction",  cat:"theoretical",     r:9,  desc:"Luhmann: trust functions by absorbing complexity. You act without verifying." },
+    { id:"agency",             label:"Agency",                cat:"political",       r:9,  desc:"The capacity to act on your own terms. Requires legibility to yourself." },
+    { id:"verification",       label:"Verification",          cat:"cryptographic",   r:8,  desc:"The cost of not trusting. Eliminated by ZK proofs. Replaced by trust in the protocol." },
+    { id:"signal",             label:"Signal",                cat:"theoretical",     r:8,  desc:"What is visible to the other party. Trust determines what signal you emit." },
+    { id:"opacity",            label:"Opacity",               cat:"political",       r:8,  desc:"Unreadable by design. The technical mechanism of privacy." },
+    { id:"legibility",         label:"Legibility",            cat:"political",       r:8,  desc:"Readable to the observer. The prerequisite for accountability — and for control." },
+    { id:"transindividuation", label:"Transindividuation",    cat:"theoretical",     r:7,  desc:"Simondon: two subjects becoming-common through sustained interaction." },
+    { id:"stigmergy",          label:"Stigmergy",             cat:"theoretical",     r:7,  desc:"Coordination through environmental traces. No central controller — only marks left in the world." },
+    { id:"pattern-language",   label:"Pattern Language",      cat:"theoretical",     r:7,  desc:"Alexander: recurring solutions at multiple scales. The palace is not a metaphor. It is a pattern." },
+  ];
+  const links = [
+    {source:"trust",           target:"complexity",         label:"defined as"},
+    {source:"trust",           target:"co-intelligence",    label:"enables"},
+    {source:"trust",           target:"verification",       label:"replaces cost of"},
+    {source:"trust",           target:"protocol",           label:"encoded in"},
+    {source:"zero-knowledge",  target:"privacy",            label:"enables"},
+    {source:"zero-knowledge",  target:"verification",       label:"eliminates"},
+    {source:"zero-knowledge",  target:"sovereignty",        label:"foundation of"},
+    {source:"mixnet",          target:"metadata",           label:"obscures"},
+    {source:"mixnet",          target:"privacy",            label:"implements"},
+    {source:"privacy",         target:"accountability",     label:"tension with"},
+    {source:"privacy",         target:"sovereignty",        label:"prerequisite for"},
+    {source:"opacity",         target:"legibility",         label:"opposition"},
+    {source:"opacity",         target:"privacy",            label:"mechanism of"},
+    {source:"legibility",      target:"accountability",     label:"enables"},
+    {source:"legibility",      target:"agency",             label:"requires"},
+    {source:"agency",          target:"sovereignty",        label:"requires"},
+    {source:"signal",          target:"metadata",           label:"exposes"},
+    {source:"signal",          target:"trust",              label:"calibrates"},
+    {source:"co-intelligence", target:"transindividuation", label:"described by"},
+    {source:"co-intelligence", target:"pattern-language",   label:"structured by"},
+    {source:"co-intelligence", target:"stigmergy",          label:"coordinates via"},
+    {source:"stigmergy",       target:"verification",       label:"alternative to"},
+    {source:"metadata",        target:"privacy",            label:"threatens"},
+    {source:"protocol",        target:"zero-knowledge",     label:"uses"},
+  ];
+  const catColor = {
+    theoretical:"#9b8fd0", political:"#c87c2c",
+    cryptographic:"#5bbfda", infrastructural:"#6b9e7a"
+  };
+  const svg     = d3.select("#network-canvas");
+  const tooltip = document.getElementById("tooltip");
+  const ttLabel = document.getElementById("tt-label");
+  const ttDesc  = document.getElementById("tt-desc");
+  let W = window.innerWidth, H = window.innerHeight;
+  svg.attr("width",W).attr("height",H);
+  const sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d=>d.id).distance(d=>60+(d.source.r+d.target.r)*3).strength(0.5))
+    .force("charge", d3.forceManyBody().strength(-340))
+    .force("center", d3.forceCenter(W/2,H/2))
+    .force("collision", d3.forceCollide(d=>d.r+18))
+    .alphaDecay(0.018);
+  window.addEventListener("resize",()=>{
+    W=window.innerWidth; H=window.innerHeight;
+    svg.attr("width",W).attr("height",H);
+    sim.force("center",d3.forceCenter(W/2,H/2)).restart();
+  });
+  const defs=svg.append("defs");
+  const flt=defs.append("filter").attr("id","glow").attr("x","-50%").attr("y","-50%").attr("width","200%").attr("height","200%");
+  flt.append("feGaussianBlur").attr("stdDeviation","4").attr("result","blur");
+  const fm=flt.append("feMerge");
+  fm.append("feMergeNode").attr("in","blur");
+  fm.append("feMergeNode").attr("in","SourceGraphic");
+  const g=svg.append("g");
+  const lnk=g.append("g").selectAll("line").data(links).join("line")
+    .attr("stroke","rgba(255,255,255,0.07)").attr("stroke-width",1);
+  const nd=g.append("g").selectAll("g").data(nodes).join("g").style("cursor","pointer")
+    .call(d3.drag()
+      .on("start",(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+      .on("drag", (e,d)=>{d.fx=e.x;d.fy=e.y;})
+      .on("end",  (e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+  nd.append("circle").attr("r",d=>d.r)
+    .attr("fill",d=>catColor[d.cat]+"1a")
+    .attr("stroke",d=>catColor[d.cat])
+    .attr("stroke-width",1.5).attr("stroke-opacity",0.65);
+  nd.append("text").text(d=>d.label)
+    .attr("text-anchor","middle").attr("dy",d=>d.r+13)
+    .attr("font-family","'Courier New',monospace").attr("font-size","9.5px")
+    .attr("fill","rgba(232,228,221,0.38)").attr("pointer-events","none");
+  nd.on("mouseenter",function(ev,d){
+    d3.select(this).select("circle").attr("fill",catColor[d.cat]+"40").attr("stroke-opacity",1).attr("filter","url(#glow)");
+    d3.select(this).select("text").attr("fill",catColor[d.cat]).attr("font-size","10.5px");
+    ttLabel.textContent=d.label; ttDesc.textContent=d.desc;
+    tooltip.classList.add("visible"); pos(ev);
+  });
+  nd.on("mousemove",pos);
+  nd.on("mouseleave",function(){
+    d3.select(this).select("circle").attr("fill",d=>catColor[d.cat]+"1a").attr("stroke-opacity",0.65).attr("filter",null);
+    d3.select(this).select("text").attr("fill","rgba(232,228,221,0.38)").attr("font-size","9.5px");
+    tooltip.classList.remove("visible");
+  });
+  function pos(ev){
+    const x=ev.clientX+16,y=ev.clientY-8,tw=tooltip.offsetWidth||220,th=tooltip.offsetHeight||60;
+    tooltip.style.left=(x+tw>window.innerWidth-16?x-tw-32:x)+"px";
+    tooltip.style.top=(y+th>window.innerHeight-16?y-th:y)+"px";
+  }
+  sim.on("tick",()=>{
+    lnk.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y).attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+    nd.attr("transform",d=>`translate(${d.x},${d.y})`);
+  });
+  setInterval(()=>{
+    if(sim.alpha()<0.01){
+      nodes.forEach(d=>{d.vx=(d.vx||0)+(Math.random()-0.5)*0.12;d.vy=(d.vy||0)+(Math.random()-0.5)*0.12;});
+      sim.alphaTarget(0.004).restart();
+    }
+  },5000);
+  </script>
 </body>
 </html>
