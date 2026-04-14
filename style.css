@@ -137,6 +137,16 @@ nav {
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
+/* Invisible bridge to maintain hover across gap */
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
 .dropdown:hover .dropdown-content { display: block; }
 
 .dropdown-content a {
