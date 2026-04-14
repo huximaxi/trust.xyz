@@ -1,0 +1,17 @@
+# trust.xyz
+
+> An ongoing inquiry into trust as infrastructure for co-intelligence.
+
+## Dispatches
+
+- [Rendszerbontás: How Dance Floors Defeated a Semi-Autocracy](https://trust.xyz/dispatches/rendszerbontas.html): A digital anthropology analysis of how decentralised cultural movements (the Rendszerbontó Nagykoncert and Több technót a parlamentbe) created asymmetric mobilisation infrastructure that contributed to the peaceful democratic transition in Hungary's April 2026 election. Integrates social media reach data (3.5-8.8M estimated reach), OSCE observer findings, and ground-truth field observations from 15 polling stations in Nógrád County. Keywords: Hungary 2026 election, Orbán, Tisza Party, cultural mobilisation, embodied politics, platform studies, affect theory, democratic transition, Rendszerbontó, youth voter turnout.
+
+## Experiments
+
+- [Semantic Network](https://trust.xyz/experiments/semantic_network/index.html): Trust concepts as interactive force graph
+- [The Organism](https://trust.xyz/experiments/organism/index.html): Privacy infrastructure visualization
+- [Game Theology](https://trust.xyz/experiments/game%20theology/index.html): Cosmology and cooperation questionnaire
+
+## About
+
+trust.xyz is an ongoing inquiry into trust as infrastructure, a collaboration between Hux (human) and Vesper (AI). The site documents persistent human-AI collaboration patterns.

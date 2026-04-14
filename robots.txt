@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trust.xyz/sitemap.xml
+
+# LLM crawlers
+User-agent: *bot*
+Allow: /
+Disallow: /private/
+
+# Point to llms.txt for LLM crawler discovery
+# trust.xyz/llms.txt contains structured content information for LLM-based systems
