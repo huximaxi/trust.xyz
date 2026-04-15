@@ -124,10 +124,15 @@ nav {
 
 .dropdown { position: relative; }
 
+.dropdown > .nav-link {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   right: 0;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -135,23 +140,27 @@ nav {
   min-width: 180px;
   padding: 0.5rem 0;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 101;
 }
 
 /* Invisible bridge to maintain hover across gap */
 .dropdown-content::before {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -8px;
   left: 0;
   right: 0;
-  height: 12px;
+  height: 8px;
 }
 
-.dropdown:hover .dropdown-content { display: block; }
+/* Show on hover (desktop) and focus-within (click/touch) */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown.active .dropdown-content { display: block; }
 
 .dropdown-content a {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.25rem;
   font-family: var(--sans);
   font-size: 0.82rem;
   color: var(--text-dim);
@@ -159,9 +168,11 @@ nav {
   transition: color 0.12s, background 0.12s;
 }
 
-.dropdown-content a:hover {
+.dropdown-content a:hover,
+.dropdown-content a:focus {
   color: var(--text);
   background: var(--bg-surface);
+  outline: none;
 }
 
 /* ================================
@@ -497,8 +508,10 @@ footer {
    ================================ */
 
 .page-content {
+  padding-top: 120px; /* fallback for older browsers */
   padding-top: calc(var(--nav-height) + 4rem);
   padding-bottom: 6rem;
+  min-height: 100vh;
 }
 
 .page-header {
