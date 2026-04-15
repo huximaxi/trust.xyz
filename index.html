@@ -225,5 +225,12 @@
     }
   },5000);
   </script>
+<!-- Umami analytics — cookieless, no personal data -->
+<script defer src="https://analytics.trust.xyz/beacon.js"
+  data-website-id="YOUR_WEBSITE_ID"></script>
+<!-- Crawler detection beacon -->
+<script>
+(function(){'use strict';var ENDPOINT='https://analytics.trust.xyz/crawlers/log';var PAGE=window.location.href;var REFERRER=document.referrer||'direct';var UA=navigator.userAgent||'unknown';var START_TIME=Date.now();function sendBeacon(){var timeOnPage=Math.round((Date.now()-START_TIME)/1000);var data={page:PAGE,referrer:REFERRER,ua:UA,ts:new Date().toISOString(),timeOnPage:timeOnPage};try{if(navigator.sendBeacon){navigator.sendBeacon(ENDPOINT,JSON.stringify(data))}else{fetch(ENDPOINT,{method:'POST',body:JSON.stringify(data),keepalive:true,headers:{'Content-Type':'application/json'}}).catch(function(){})}}catch(e){}}function init(){sendBeacon();document.addEventListener('visibilitychange',function(){if(document.hidden){sendBeacon()}});window.addEventListener('beforeunload',function(){sendBeacon()})}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}})();
+</script>
 </body>
 </html>
