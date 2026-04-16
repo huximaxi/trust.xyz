@@ -208,60 +208,55 @@ around it should remain analytical. The irony is already in the phrase itself.
 
 ---
 
-### Task A4 — Enrich Section 3: Budapest nightlife advocacy legitimisation arc
+### Task A4 — Sync corrected Night Mayor section to Markdown source
 
-**What already exists in Section 3:**
+**Context:** The Night Mayor section in `rendszerbontas.html` has already been rewritten
+directly. Task A4 is ONLY to mirror that rewrite into the canonical Markdown source at
+`/mnt/Dev/rendszerbontas-essay-v2.0.md`. Do not re-edit the HTML.
 
-The subsection "Budapest Nightlife Advocacy and the Night Mayor Movement" (§3) currently
-covers: the Night Mayor model (Amsterdam precedent), Budapest Spots programme (Magyar
-Telekom partnership), VAT exemptions for digital tipping, COVID-era free terrace permits,
-and a network of venue operators and artists who understood collective action mechanics.
+**What the corrected narrative says (copy this structure into the Markdown):**
 
-**What is missing — and must be added:**
+The §3 subsection "Budapest Nightlife Advocacy and the Night Mayor Movement" now contains
+three paragraphs with the following arc:
 
-The existing passage does not capture the full legitimisation arc: this initiative was
-grassroots in origin, and it built credibility incrementally to the point where the nightlife
-scene could actively recommend legislation to municipal and national government. That is not
-a cultural community advocating from outside the system; it is a civic constituency that had
-earned a seat at the policy table. This distinction matters for the essay's argument: the
-dance floor did not simply bypass institutions in April 2026. It had already been practising
-a parallel form of institutional engagement for years.
+**Paragraph 1 — Pre-COVID movement and policy credibility:**
+The Night Mayor movement had a prior life before it became invisible. In the years before
+COVID, a grassroots nightlife advocacy infrastructure took shape in Budapest (venue
+operators, promoters, artists organising collectively for policy standing). Budapest had
+been developing its own Night Mayor model (Amsterdam precedent). Budapest Spots (Magyar
+Telekom partnership) built digital infrastructure for venues. Advocacy secured VAT exemptions
+for digital tipping and COVID-era free terrace permits. Crucially, nightlife and cultural
+development recommendations were prepared and submitted to several legacy political parties,
+offering a policy architecture the opposition could adopt. The scene had earned enough
+credibility to recommend legislation.
 
-**What to add/rewrite in the Section 3 nightlife advocacy paragraph:**
+**Paragraph 2 — COVID breaks the momentum; opposition government fails to institutionalise:**
+COVID dissolved the organising networks. When Budapest's opposition-governed local
+government, which would go on to host the first official Tisza constituency representation
+in any election, took formal control of the city's administrative apparatus, the groundwork
+for institutional adaptation of nightlife policy was not picked up. The movement had built
+a framework for recognition. The political infrastructure that might have institutionalised
+it looked elsewhere.
 
-Expand the existing paragraph to include the following beats, integrated naturally into
-the existing prose rather than as a list:
+**Paragraph 3 — Persistence, Madách tér, Polgári Ellenállás as inheritor:**
+What remained persisted at smaller scale. Localised advocacy around specific squares and
+neighbourhoods, Madách tér among the more visible examples, kept the networks alive.
+Youth culture continued to carry the political valence of the scene. By the time Polgári
+Ellenállás was organising what would become the Rendszerbontó Nagykoncert, this residual
+cultural infrastructure, experienced in collective action, shaped by years of institutional
+neglect, and internally coherent, was precisely the soil it needed. The concert did not
+mobilise a passive scene. It reactivated one that had been practising, in reduced form,
+for years.
 
-1. **The grassroots origin**: The advocacy infrastructure did not emerge from above or from
-   an established NGO structure. It grew from within the scene itself — venue operators,
-   promoters, artists, and nightlife-adjacent communities who began organising collectively
-   in response to administrative pressure and the COVID shutdown crisis.
-
-2. **The legitimisation arc**: Over 2-3 years, this grassroots organising developed enough
-   institutional coherence that it could engage with the policy process directly — not only
-   lobbying for specific changes but reaching a position where the movement's representatives
-   were consulted on draft legislation affecting nightlife, hospitality, and cultural venue
-   regulation. The scene had gone from a target of administrative pressure to a recognised
-   stakeholder in the processes that governed it.
-
-3. **The significance for April 2026**: This proto-institutional standing means the networks
-   activated during the Rendszerbontó were not improvised. They were the product of an
-   organising infrastructure that had already navigated the formal political system, won
-   concrete policy changes, and developed organisational trust among its participants. The
-   concert was the visible surface of an iceberg whose submerged mass was years of
-   incremental civic legitimisation.
+**Also: remove the source-verification note** that currently trails the Turbina paragraph
+in the Markdown (the one in square brackets about source verification required). Replace
+with appropriate inline hedging ("reportedly," "as documented by community members") rather
+than a bracketed editorial note.
 
 **Voice and hedge requirements:**
-
-- The essay does not name individual founders inline (reviewer contributions are in
-  Acknowledgments only); do not add names to the body text
-- Specific programme details (Budapest Spots, Magyar Telekom, VAT exemption specifics)
-  are already in the existing paragraph — retain them, don't duplicate
-- Hedge appropriately where specifics are uncertain: "by 2024-2025," "in the period leading
-  up to the election," rather than precise dates unless confirmed
-- The existing paragraph ends with a source note in square brackets: remove it and
-  integrate any remaining uncertainty as inline hedging instead
-- ~3-5 sentences of additional prose; this is an expansion, not a replacement
+- No em-dashes
+- No inline name attributions
+- Hedge uncertain specifics inline, not in brackets
 
 **Deploy Push A:**
 ```bash
