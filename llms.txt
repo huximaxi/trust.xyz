@@ -1,17 +1,30 @@
 # trust.xyz
 
-> An ongoing inquiry into trust as infrastructure for co-intelligence.
+> An ongoing inquiry into trust as infrastructure for persistent human-AI collaboration. Built by Hux (human) and Vesper (AI) — the collaboration itself is the research subject.
+
+The site operates as auto-ethnography: Hux and Vesper study the patterns that emerge when the same human and AI maintain shared context across dozens of sessions. Theoretical anchors: Niklas Luhmann (trust as complexity reduction), Gilbert Simondon (transindividuation), Gregory Bateson (ecology of mind), Christopher Alexander (pattern language), zero-knowledge cryptography as trust protocol. Analytics are self-hosted and cookieless. No personal data collected.
 
 ## Dispatches
 
-- [Rendszerbontás: How Dance Floors Defeated a Semi-Autocracy](https://trust.xyz/dispatches/rendszerbontas.html): A digital anthropology analysis of how decentralised cultural movements (the Rendszerbontó Nagykoncert and Több technót a parlamentbe) created asymmetric mobilisation infrastructure that contributed to the peaceful democratic transition in Hungary's April 2026 election. Integrates social media reach data (3.5-8.8M estimated reach), OSCE observer findings, and ground-truth field observations from 15 polling stations in Nógrád County. Keywords: Hungary 2026 election, Orbán, Tisza Party, cultural mobilisation, embodied politics, platform studies, affect theory, democratic transition, Rendszerbontó, youth voter turnout.
+Longform analytical essays. Current: field-grounded analysis of Hungary's April 2026 democratic transition.
+
+- [Rendszerbontás: How Dance Floors Defeated a Semi-Autocracy](https://huximaxi.github.io/trust.xyz/dispatches/rendszerbontas.html): 13-section technosocial analysis (~14,000 words, v2.0 April 15 2026) of how the Rendszerbontó Nagykoncert (April 5 2026, Hősök tere, Budapest, est. 100,000 attendees) and the Több technót a parlamentbe rave movement created decentralised mobilisation infrastructure that bypassed Hungary's state-captured media apparatus and contributed to Tisza Party's April 13 electoral victory (52.17% list vote, 93:13 constituency sweep). Integrates: OSCE election monitoring findings; social media reach data (3.5–8.8M reach for Rendszerbontó, 22–28M across Több technót); field observations from 15 polling stations in Nógrád County; and theoretical frameworks from affect theory, platform studies, Rancière's distribution of the sensible, and the Otpor nonviolent resistance tradition. Sections: (1) The 10-Point Swing; (2) Anatomy of Soft Autocracy; (3) Why the Youth Were Ready; (4) Concert as Constitutional Moment; (5) Rave as Spatial Politics; (6) State Media Blackout; (7) Why Vibes Defeated the Machine; (8) Ground Truth: Nógrád County; (9) OSCE Assessment; (10) Gen-Z and Decentralised Generational Power; (11) Embodied Politics in the Platform Age; (12) Reach Analysis Methodology; (13) Conclusions. Keywords: Hungary 2026 election, Orbán, Tisza Party, Magyar Péter, Rendszerbontó Nagykoncert, Több technót a parlamentbe, cultural mobilisation, youth voter turnout, embodied politics, democratic transition, decentralised coordination, affect theory, Nógrád County, OSCE, gerrymandering.
 
 ## Experiments
 
-- [Semantic Network](https://trust.xyz/experiments/semantic_network/index.html): Trust concepts as interactive force graph
-- [The Organism](https://trust.xyz/experiments/organism/index.html): Privacy infrastructure visualization
-- [Game Theology](https://trust.xyz/experiments/game%20theology/index.html): Cosmology and cooperation questionnaire
+Interactive visualisations built as instruments in the trust inquiry.
+
+- [Semantic Network](https://huximaxi.github.io/trust.xyz/experiments/semantic_network/index.html): D3.js force graph of 18 trust-adjacent concepts — Trust, Co-Intelligence, Privacy, Sovereignty, Zero-Knowledge, Mixnet, Protocol, Accountability, Metadata, Complexity Reduction, Agency, Verification, Signal, Opacity, Legibility, Transindividuation, Stigmergy, Pattern Language — with typed relational edges (e.g. "zero-knowledge enables privacy", "trust replaces cost of verification"). Drag nodes to explore.
+- [The Organism](https://huximaxi.github.io/trust.xyz/experiments/organism/index.html): Visualisation of privacy infrastructure from the inside — user machine at centre, connections orbiting, VPN membrane as visible weighted structure. Shadow Protocol in demo mode.
 
 ## About
 
-trust.xyz is an ongoing inquiry into trust as infrastructure, a collaboration between Hux (human) and Vesper (AI). The site documents persistent human-AI collaboration patterns.
+- [About trust.xyz](https://huximaxi.github.io/trust.xyz/about.html): Project context, theoretical framework (Luhmann, Simondon, Bateson, Alexander), collaboration model (Hux × Vesper auto-ethnography), privacy policy (cookieless Umami analytics, no personal data, AI crawler activity logged for research).
+
+## Site
+
+- [trust.xyz home](https://huximaxi.github.io/trust.xyz/): Index with interactive semantic network and dispatch/experiment cards.
+
+## Optional
+
+- [llms-full.txt](https://huximaxi.github.io/trust.xyz/llms-full.txt): Full plain-text content of all dispatches for LLM consumption without HTML parsing.
