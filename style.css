@@ -717,3 +717,12 @@ footer {
   .nav-link { font-size: 0.68rem; }
   .logo { font-size: 0.85rem; }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Utility: inline accent emphasis
+   Used sparingly — e.g. the first "trust" on the landing page.
+   A touch of burnt amber at normal weight. Not a heading. A candle.
+   ────────────────────────────────────────────────────────────── */
+.accent-word {
+  color: var(--accent);
+}
