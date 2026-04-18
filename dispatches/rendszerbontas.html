@@ -375,6 +375,146 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Dispatch brief — orientation block for scanners and sociologists.
+       Sits between lang-toggle and ToC. Sells the piece in under 30 seconds. */
+    .dispatch-brief {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0 2.5rem;
+      font-family: var(--sans);
+    }
+
+    .dispatch-brief .brief-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin: 0 0 0.85rem 0;
+    }
+
+    .dispatch-brief h2.brief-thesis {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin: 0 0 1rem 0;
+      font-weight: normal;
+      border: none;
+      padding: 0;
+    }
+
+    .dispatch-brief .brief-lede {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text-dim);
+      margin: 0;
+    }
+
+    .dispatch-brief .brief-section {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .dispatch-brief .brief-section h3 {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin: 0 0 1rem 0;
+      font-weight: normal;
+      border: none;
+      padding: 0;
+    }
+
+    .dispatch-brief .brief-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.1rem 1.25rem;
+    }
+
+    .dispatch-brief .brief-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .dispatch-brief .brief-stat .stat-num {
+      font-family: var(--mono);
+      font-size: 1.4rem;
+      color: var(--accent);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .dispatch-brief .brief-stat .stat-label {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* Override article-prose ul styles for the anchors grid. */
+    .article-prose .dispatch-brief .brief-anchors {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.55rem 1.75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .article-prose .dispatch-brief .brief-anchors li {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-dim);
+      padding-left: 0;
+      list-style: none;
+      position: relative;
+      margin: 0;
+    }
+
+    .article-prose .dispatch-brief .brief-anchors li::before {
+      content: none;
+    }
+
+    .dispatch-brief .brief-anchors strong {
+      font-family: var(--sans);
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .dispatch-brief .brief-method {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+      margin: 0;
+    }
+
+    @media (max-width: 640px) {
+      .dispatch-brief {
+        padding: 1.25rem 1rem;
+      }
+      .dispatch-brief h2.brief-thesis {
+        font-size: 1.05rem;
+      }
+      .dispatch-brief .brief-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.9rem;
+      }
+      .dispatch-brief .brief-stat .stat-num {
+        font-size: 1.2rem;
+      }
+    }
+
     @media (max-width: 640px) {
       .article-container {
         padding: 0 1rem;
@@ -594,6 +734,62 @@
           <button id="lang-en" class="active" data-lang="en">EN</button>
           <button id="lang-hu" data-lang="hu">HU</button>
         </div>
+
+
+        <aside class="dispatch-brief" aria-label="Dispatch brief">
+          <p class="brief-label">Dispatch brief · 45-min read</p>
+          <h2 class="brief-thesis">Hungary's April 12, 2026 election produced a constitutional supermajority for a party that barely existed 18 months earlier — at the highest turnout in 24 years. The decisive mechanism was not a political campaign but a cultural one.</h2>
+          <p class="brief-lede">The surge came from the return of the <em>politically lapsed</em> — people who had voted before, stopped, and came back. What called them back was a seven-hour concert on Hősök tere, a techno movement in front of Parliament, and the platform-native distribution that made both legible to a generation the state-captured media apparatus had ignored into existence.</p>
+
+          <div class="brief-section">
+            <h3>By the numbers</h3>
+            <div class="brief-stats">
+              <div class="brief-stat">
+                <span class="stat-num">79.55%</span>
+                <span class="stat-label">Domestic turnout — highest since 2002</span>
+              </div>
+              <div class="brief-stat">
+                <span class="stat-num">136 / 199</span>
+                <span class="stat-label">Tisza seats; supermajority threshold 133</span>
+              </div>
+              <div class="brief-stat">
+                <span class="stat-num">−139,794</span>
+                <span class="stat-label">Net new-registrant ballots vs. 2022 (the surge was returners)</span>
+              </div>
+              <div class="brief-stat">
+                <span class="stat-num">80–100k</span>
+                <span class="stat-label">Physical attendance at Hősök tere</span>
+              </div>
+              <div class="brief-stat">
+                <span class="stat-num">22–28M</span>
+                <span class="stat-label">Accounts reached by Több technót movement</span>
+              </div>
+              <div class="brief-stat">
+                <span class="stat-num">0</span>
+                <span class="stat-label">Minutes of state media coverage</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="brief-section">
+            <h3>Theoretical anchors</h3>
+            <ul class="brief-anchors">
+              <li><strong>Luhmann</strong> — trust as complexity reduction</li>
+              <li><strong>Habermas</strong> — system colonising the life-world</li>
+              <li><strong>Rancière</strong> — redistribution of the sensible</li>
+              <li><strong>Popović / Otpor</strong> — humour as authoritarian-incompatible tactic</li>
+              <li><strong>Szendrői</strong> — grains of sand recognised as a golem</li>
+              <li><strong>Dawkins, Blackmore</strong> — memeplex replication</li>
+              <li><strong>Kripal, Davis</strong> — egregore as emergent collective entity</li>
+              <li><strong>Stigmergy</strong> — coordination through environmental traces, no central controller</li>
+            </ul>
+          </div>
+
+          <div class="brief-section">
+            <h3>Method &amp; scope</h3>
+            <p class="brief-method">Auto-ethnographic field observation across 15 polling stations in Nógrád OEVK 01 on election day (05:00 → 04:00 following morning), alongside two international short-term observers. Paired with quantitative analysis of constituency-level NVI data (<em>reszvetel_oevk_adatok</em>), livestream and social-reach metrics, and domestic + international media coverage. Primary-source observation combined with distant reading of platform distribution.</p>
+          </div>
+        </aside>
 
 
         <div class="article-toc">
