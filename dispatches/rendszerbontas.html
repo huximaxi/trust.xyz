@@ -214,6 +214,125 @@
       opacity: 0.7;
     }
 
+    /* Lightweight tabulation — responsive across all viewports.
+       .table-wrap allows horizontal scroll when a table overflows.
+       .data-table.compare stacks into a vertical list on narrow screens. */
+    .table-wrap {
+      margin: 1.75rem 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      background: var(--bg-surface);
+    }
+
+    .article-prose .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      margin: 0;
+    }
+
+    .table-wrap > .data-table {
+      margin: 0;
+    }
+
+    .article-prose .data-table:not(.table-wrap .data-table) {
+      margin: 1.75rem 0;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg-surface);
+    }
+
+    .article-prose .data-table caption {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--bg-card);
+      caption-side: top;
+    }
+
+    .article-prose .data-table th {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-soft);
+      font-weight: normal;
+      vertical-align: bottom;
+    }
+
+    .article-prose .data-table td {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border-soft);
+      vertical-align: top;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .article-prose .data-table td.num,
+    .article-prose .data-table td.mono {
+      font-family: var(--mono);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .article-prose .data-table tbody tr:hover {
+      background: rgba(200, 124, 44, 0.04);
+    }
+
+    /* Narrow viewport: .compare tables stack by row, each cell labelled. */
+    @media (max-width: 640px) {
+      .article-prose .data-table.compare,
+      .article-prose .data-table.compare thead,
+      .article-prose .data-table.compare tbody,
+      .article-prose .data-table.compare tr,
+      .article-prose .data-table.compare td {
+        display: block;
+        width: 100%;
+      }
+
+      .article-prose .data-table.compare thead {
+        display: none;
+      }
+
+      .article-prose .data-table.compare tr {
+        border-top: 1px solid var(--border-soft);
+        padding: 0.5rem 0;
+      }
+
+      .article-prose .data-table.compare tr:first-child {
+        border-top: none;
+      }
+
+      .article-prose .data-table.compare td {
+        border-top: none;
+        padding: 0.25rem 1rem;
+      }
+
+      .article-prose .data-table.compare td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--accent);
+        margin-bottom: 0.15rem;
+      }
+    }
+
     .article-footer {
       border-top: 1px solid var(--border);
       padding-top: 2rem;
@@ -514,14 +633,14 @@
           <p>The numbers contain a structural paradox that matters for understanding what happened. Hungary uses a dual voting system: 106 seats are determined by individual constituency races (first-past-the-post, one candidate per district), and 93 seats are allocated through a national proportional party list. On the party list, Fidesz-KDNP received 2,355,857 votes (39.45%), earning 43 seats. Tisza received 3,115,323 votes (52.17%), earning 44 seats. Nearly equal list seats despite a 12-point gap in list vote share. On individual constituencies, the result was 93 to 13 in Tisza's favour (final constituency-level data; earlier partial counts showed 92:14). This is the geometry of gerrymandering unwinding: the system had been optimised to convert dispersed Fidesz rural support into concentrated constituency wins, but when the swing reached threshold, the same architecture delivered a supermajority to the other side.</p>
           <p>Péter Magyar's victory address: "Mától ez az ország újra él" (From today, this country lives again). Orbán's concession was the shortest of his career: "Mi ellenzékből is a hazánkat fogjuk szolgálni" (We will serve our country from opposition too). Realpolitik, not grandstanding. The forint rallied immediately.</p>
           <p>But the data pose a puzzle for conventional political science. Tisza's campaign was rapid. Péter Magyar was charismatic. Yet the opposition had been organised, polished, and sophisticated for over a decade without moving the needle. What shifted between 2022 and 2026 that produced Hungary's highest turnout in 24 years?</p>
-          <p>The constituency-level participation data (reszvetel_oevk_adatok, NVI, April 12, 2026) reveals a striking structural finding: the net change in registered voters who cast a ballot, compared to 2022, was negative 139,794 nationwide. The turnout surge was not driven by first-time or newly registered voters. It was driven by the return of the previously disengaged: people who had voted in earlier cycles, abstained in 2022, and came back in 2026. Budapest alone accounts for 68,369 of those returnees, with the highest concentrations in districts 3, 12, and 2. This distinction matters enormously for understanding the mobilisation mechanism. Concerts and cultural events do not primarily reach people who have never had a political identity. They reach people who had one, lost it, and need permission to reclaim it. The Rendszerbontó's audience was not the politically naive. It was the politically lapsed.</p>
+          <p>The constituency-level participation data (reszvetel_oevk_adatok, NVI, April 12, 2026) reveals a striking structural finding: the net change in registered voters who cast a ballot, compared to 2022, was negative 139,794 nationwide. The turnout surge was not driven by first-time or newly registered voters. It was driven by the return of the previously disengaged: people who had voted in earlier cycles, abstained in 2022, and came back in 2026. Budapest alone accounts for 68,369 of those returnees, with the highest concentrations in districts 3, 12, and 2. This distinction matters enormously for understanding the mobilisation mechanism. Concerts and cultural events do not primarily reach people who have never had a political identity. They reach people who had one, lost it, and need permission to reclaim it. <span class="accent-word">The Rendszerbontó's audience was not the politically naive. It was the politically lapsed.</span></p>
           <p>This essay proposes an asymmetrical answer: not a political strategy, but a cultural infrastructure. Not messaging, but movement. Not campaigns, but concerts and raves.</p>
           <p>Specifically, two phenomena:</p>
           <p>1. The "Rendszerbontó Nagykoncert": a 7-hour system-critical concert organised by Róbert Puzsér, featuring 50+ contemporary artists, predominantly Gen-Z icons like Azahriah and Krúbi. Physical attendance: 80,000 to 100,000 across Hősök tere with overflow to Andrássy út. Livestream reach: 122,000 peak concurrent on the Szélsőközép YouTube channel, with estimated 400,000 to 700,000 unique stream viewers across the 7-hour broadcast. Combined with organic social media distribution, the Rendszerbontó reached estimated 1.5 to 3 million accounts on Instagram and 1 to 4 million on TikTok through algorithmic amplification.</p>
           <p>2. The "Több technót a parlamentbe" (More Techno to Parliament) movement: techno raves positioned adjacent to Parliament Square itself, using AI-generated imagery and platform-native coordination, explicitly framing electronic dance music as a weapon of democratic participation. The movement circulated across 22 to 28 million accounts with an estimated 3.8 million shares of original content.</p>
           <p>These were not grassroots accidents. They were technosocial infrastructure: decentralised, platform-mediated, algorithmically amplified cultural events that reached precisely the demographic that conventional opposition messaging had consistently failed to move.</p>
           <p>The central thesis: embodied politics (dancing, singing, collective presence) merged with platform-native coordination to create a mobilisation pathway that bypassed the state-captured media apparatus entirely, and in doing so, rewrote the political possibilities for a generation that had grown up under soft authoritarianism.</p>
-          <p>This is the story of how vibes defeated a machine. And it matters for understanding not just Hungary, but how democratic transition works in the platform age.</p>
+          <p>This is the story of how <span class="accent-word">vibes defeated a machine</span>. And it matters for understanding not just Hungary, but how democratic transition works in the platform age.</p>
           <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
         </section>
         <section id="section-2">
@@ -618,7 +737,7 @@
           <p>COVID broke the momentum of the formal structures, but not of the networks themselves. The movement's social media communities, managed as groups through the shutdown years, were transferred to two culturally affiliated young organisers who carried that audience forward. Both were subsequently elected as civil servant representatives to the Budapest municipality — in minority positions, but with formal civic standing. The opposition-governed local government that came to power after the 2019 municipal elections, which would go on to host the first official Tisza constituency representation in any election at all, did not formally adopt the nightlife policy framework. The institutional bridge remained unbuilt. The social one did not.</p>
           <p>What remained persisted at smaller scale. Localised advocacy around specific squares and neighbourhoods, Madách tér among the more visible examples, kept the networks alive and the arguments rehearsed. Youth culture continued to carry the political valence of the scene even after its formal advocacy apparatus had gone quiet. By the time Polgári Ellenállás (Civil Resistance) was organising what would become the Rendszerbontó Nagykoncert, this residual cultural infrastructure, experienced in collective action, shaped by years of institutional neglect, and internally coherent, was precisely the soil it needed. The concert did not mobilise a passive scene. It reactivated one that had been practising, in reduced form, for years.</p>
           <h3>The Concert as Embodiment, Not Cause</h3>
-          <p>This context reframes the Rendszerbontó and Több technót movements. They were not the cause of youth mobilisation. They were its embodiment. The decision to vote had already been forming in the accumulated frustrations of a generation: the forint eroding their savings, home ownership becoming a myth, drug law enforcement closing their spaces, an entire political system that communicated through its every action that their generation's preferences were irrelevant. The concerts gave that pre-existing collective will a form, a moment of recognition. The crowd at Hősök tere was not being convinced of something new; it was recognising something it already knew.</p>
+          <p>This context reframes the Rendszerbontó and Több technót movements. <span class="accent-word">They were not the cause of youth mobilisation. They were its embodiment.</span> The decision to vote had already been forming in the accumulated frustrations of a generation: the forint eroding their savings, home ownership becoming a myth, drug law enforcement closing their spaces, an entire political system that communicated through its every action that their generation's preferences were irrelevant. The concerts gave that pre-existing collective will a form, a moment of recognition. The crowd at Hősök tere was not being convinced of something new; it was recognising something it already knew.</p>
           <p>This distinction matters enormously for comparative analysis. In the United States, celebrity endorsements and concert events have repeatedly failed to deliver youth turnout because the cultural establishment endorsing a candidate is itself part of the institutional order being rejected. The American left cultural apparatus is the establishment. When Taylor Swift endorses a candidate, she is the system speaking. When Azahriah and Elefánt and Beton.Hofi took the Hősök tere stage, they were not the establishment. They were the generation that had had its spaces closed, its futures narrowed, and its preferences ignored. They were not speaking on behalf of a political party. They were speaking for themselves. The crowd did not need to be persuaded to vote for Tisza; it needed to feel that its own momentum was real. The concert delivered that feeling.</p>
           <p>The left/right taxonomy does not map usefully onto this. The Rendszerbontó lineup spanned generational and ideological registers; it was not a left-wing cultural event. It was a system-critical event. The operative division was not left versus right but incumbent versus insurgent: the NER machine versus the generation it had failed to buy or frighten into compliance.</p>
           <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
@@ -692,13 +811,13 @@
           <p>The Rendszerbontó was organised by Polgári Ellenállás (Civil Resistance), a non-partisan movement. Explicitly: no political party flags, campaign banners, or materials were permitted. Parties were instructed not to use the event for campaign purposes. This boundary was maintained rigorously. The event was not a Tisza rally with musicians attached. It was a civilian cultural statement that happened to occur two days before an election.</p>
           <p>A TÁSZ legal hotline (+36 30 722 3356) was active during the event. Nine medical stations were positioned across the venue. The event's motto was: "ami ma a kultúra, holnap az a politika" (what is culture today is politics tomorrow), a declaration that cultural expression precedes and ultimately determines political possibility.</p>
           <p>The event was billed as a concert. And yet, every element of its design was political architecture.</p>
-          <p>Seven hours. Not three, not five. Seven. This was deliberate. Seven hours is not entertainment; it is endurance. It is transformation. It is the length of a cultural ritual, not a consumer experience. Seven hours exceeds the threshold of passive spectatorship. At hour five, you are no longer there to be entertained; you are there because you have chosen to be part of something. The duration itself becomes a statement: this matters enough to stand in a crowd for seven hours.</p>
+          <p>Seven hours. Not three, not five. Seven. This was deliberate. <span class="accent-word">Seven hours is not entertainment; it is endurance. It is transformation.</span> It is the length of a cultural ritual, not a consumer experience. Seven hours exceeds the threshold of passive spectatorship. At hour five, you are no longer there to be entertained; you are there because you have chosen to be part of something. The duration itself becomes a statement: this matters enough to stand in a crowd for seven hours.</p>
           <h3>Intergenerational Coalition</h3>
           <p>This lineup was deliberately curated as a generational bridge. Európa Kiadó performed in 1980s punk/wave contexts, representing those who had lived in democratic Hungary. Quimby emerged in the 1990s alt-rock scene, bridging the transition years. Anima Sound System represented the 2000s dub and electronica movement. By the final block, Azahriah, Krúbi, and Carson Coma embodied the Gen-Z platform-native generation: artists who had never performed for Orbán's system, who built audiences through Spotify, TikTok, and YouTube rather than state television.</p>
           <p>The strategic significance of this composition prevented the event from reading as a "youth uprising." Instead, it manifested as a civilisational coalition: a statement that Orbánism had alienated not one demographic, but the entire arc of Hungarian cultural production across 40 years. Parents and grandparents could see their generation represented. Young voters could see themselves at the headliner slots.</p>
           <h3>The Golem of Youth</h3>
           <p>We might apply Jacques Rancière's framework here: the concert was a moment of "distribution of the sensible" (Rancière, 2004), an expansion of who could appear in the political space. For young voters, the concert validated their existence as political subjects. It said: your music, your generation, your presence matters to the future of this country. It rewrote the visible field of politics from "Fidesz vs. Opposition Parties" to "Us vs. The System."</p>
-          <p>But the concert was also a moment of subject formation. Perhaps no one articulated this more precisely than Csaba Szendrői, poet and front-singer of Elefánt, who spoke to the crowd from the Hősök tere stage. He said that his fundamental experience of the NER (Nemzeti Együttműködés Rendszere, the System of National Cooperation, Orbán's name for his own regime) is that it is a machine, and in that machine there are two kinds of people: "A fogaskerekek és mi, a homokszemek, de az az érzésem, hogy mi össze fogunk állni egy gólemmé és el fogjuk söpörni ezt a korrupt, mocskos rendszert" (The cogwheels, and us, the grains of sand, but I have a feeling that we will come together into a golem and sweep away this corrupt, filthy system). The metaphor is precise and deeply Central European: the golem, a creature assembled from inert matter by collective will, animated by a word of truth inscribed on its forehead. In the NER machine, citizens are either cogwheels (compliant, functional, turning as instructed) or grains of sand (irritants, insignificant, swept aside). But Szendrői names a third possibility: the grains of sand recognise each other, coalesce, and become something the machine never anticipated. Individual grains are nothing against cogwheels. But a golem is not sand; it is sand that has recognised itself as a single body. Arriving at the Rendszerbontó, the attendee was a dispersed voter, a grain. Leaving, they were part of a collective political actor. The crowd itself became the political subject; not individuals who happened to vote similarly, but a singular body that had moved together. Szendrői named the transformation as it happened.</p>
+          <p>But the concert was also a moment of subject formation. Perhaps no one articulated this more precisely than Csaba Szendrői, poet and front-singer of Elefánt, who spoke to the crowd from the Hősök tere stage. He said that his fundamental experience of the NER (Nemzeti Együttműködés Rendszere, the System of National Cooperation, Orbán's name for his own regime) is that it is a machine, and in that machine there are two kinds of people: "A fogaskerekek és mi, a homokszemek, de az az érzésem, hogy mi össze fogunk állni egy gólemmé és el fogjuk söpörni ezt a korrupt, mocskos rendszert" (The cogwheels, and us, the grains of sand, but I have a feeling that we will come together into a golem and sweep away this corrupt, filthy system). The metaphor is precise and deeply Central European: the golem, a creature assembled from inert matter by collective will, animated by a word of truth inscribed on its forehead. In the NER machine, citizens are either cogwheels (compliant, functional, turning as instructed) or grains of sand (irritants, insignificant, swept aside). But Szendrői names a third possibility: the grains of sand recognise each other, coalesce, and become something the machine never anticipated. <span class="accent-word">Individual grains are nothing against cogwheels. But a golem is not sand; it is sand that has recognised itself as a single body.</span> Arriving at the Rendszerbontó, the attendee was a dispersed voter, a grain. Leaving, they were part of a collective political actor. The crowd itself became the political subject; not individuals who happened to vote similarly, but a singular body that had moved together. Szendrői named the transformation as it happened.</p>
           <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
         </section>
         <section id="section-5">
@@ -715,7 +834,7 @@
           <p>Where the Rendszerbontó Nagykoncert was a spectacle, a moment, an event, the "Több technót a parlamentbe" (More Techno to Parliament) movement was something subtly different: distributed, persistent, and explicitly framed as the politicisation of pleasure.</p>
           <h3>Genealogy and Predecessors</h3>
           <p>The genealogy matters. Love Parade in Berlin (1989 onward) was explicitly a post-Cold War celebration of freedom through electronic music and collective dancing. Reclaim the Streets was a 1990s movement that used raves and street parties to reclaim public space from motor vehicles and authoritarian urban design (Ferrell, 1996). The Parliament Techno movement in Hungary inherited both lineages: the celebration of post-authoritarian freedom, and the deliberate reclamation of the political centre (literally, the Parliament building) through embodied pleasure.</p>
-          <p>One further lineage the movement visibly inhabited: the Otpor (Resistance) tradition. The Rendszerbontó concert's official symbolism prominently featured a raised fist modelled closely on Otpor's logo. Otpor was the Serbian youth movement that nonviolently dismantled Slobodan Milošević's regime in 2000 through deliberately humorous, low-barrier tactics. Srđa Popović, who helped lead Otpor and codified its methods in Blueprint for Revolution (2015), argues that ridicule is the most effective tool against authoritarian regimes precisely because it forces an impossible response: either ignore the mockery (validating it) or react (legitimising it). The Több technót manifesto operated exactly in this register. Its demands were absurdist, parliamentary immunity for DJs, state-funded techno radio, but absurdism that is confidently shared at scale is not dismissed; it spreads. It enrols participants who would never respond to a conventional pamphlet. Popović's formula: humour creates a low barrier to entry, scales without hierarchy, and works because it denies the authoritarian the dignity of being taken entirely seriously. The dance floor was both celebration and joke. The joke was also the weapon.</p>
+          <p>One further lineage the movement visibly inhabited: the Otpor (Resistance) tradition. The Rendszerbontó concert's official symbolism prominently featured a raised fist modelled closely on Otpor's logo. Otpor was the Serbian youth movement that nonviolently dismantled Slobodan Milošević's regime in 2000 through deliberately humorous, low-barrier tactics. Srđa Popović, who helped lead Otpor and codified its methods in Blueprint for Revolution (2015), argues that ridicule is the most effective tool against authoritarian regimes precisely because it forces an impossible response: either ignore the mockery (validating it) or react (legitimising it). The Több technót manifesto operated exactly in this register. Its demands were absurdist, parliamentary immunity for DJs, state-funded techno radio, but absurdism that is confidently shared at scale is not dismissed; it spreads. It enrols participants who would never respond to a conventional pamphlet. Popović's formula: humour creates a low barrier to entry, scales without hierarchy, and works because it denies the authoritarian the dignity of being taken entirely seriously. The dance floor was both celebration and joke. <span class="accent-word">The joke was also the weapon.</span></p>
           <h3>Organisation and Platform-Native Coordination</h3>
           <p>The "Több technót a parlamentbe" movement crystallised around a specific event and distributed organisational presence. The YouTube channel @technottabb1830 coordinated digital messaging. The official event was titled "A Biztos Veretés: A választások hivatalos afterpartyja" (The Certified Beat: The Elections' Official Afterparty). Organiser: Dániel Besnyő (confirmed by Euronews reporting; Besnyő is noted as a media professional and former Partizán presenter).</p>
           <p>The event took place on election day, April 12, 2026, at Kossuth Lajos tér (Parliament Square itself). The location was explicitly symbolic. Techno raves positioned adjacent to, or even in front of, the Parliament building. The state building; the locus of captured democracy; became the dance floor. Continuing events relocated to Turbina club from 22:30 onward, extending the celebration through the night of results.</p>
@@ -728,7 +847,7 @@
           <p>"Mentelmi jogot a DJ-knek!" (Parliamentary immunity for DJs): "Whoever keeps the community's rhythm belongs in the spotlight, not in handcuffs." This demand uses parliamentary language while inverting it. DJs keep the rhythm of community life. They should have protection equivalent to elected officials.</p>
           <p>"Az állam garantálja a magyar elektronikus zenei előadók befolyásolásmentes működését!" (The state must guarantee independence of Hungarian electronic music artists): Explicit demand for non-interference. State support without state control. This directly countered the Fidesz model of cultural funding conditional on political compliance.</p>
           <p>"Legyen országos, államilag finanszírozott technórádió!" (National state-funded techno radio): Public radio infrastructure dedicated to electronic music, operated with editorial independence. This claim to state resources for counter-cultural content was audacious: you cannot suppress us; you have to fund us.</p>
-          <p>The underlying claim, repeated across the manifesto: "Ami ma a klubban történik, holnap a mindennapokban folytatódik" (What happens in the club today continues in everyday life tomorrow). This frames dancing as a rehearsal for democracy; the rhythmic coordination of bodies in the present as a model for political coordination in the future.</p>
+          <p>The underlying claim, repeated across the manifesto: "Ami ma a klubban történik, holnap a mindennapokban folytatódik" (<span class="accent-word">What happens in the club today continues in everyday life tomorrow</span>). This frames dancing as a rehearsal for democracy; the rhythmic coordination of bodies in the present as a model for political coordination in the future.</p>
           <h3>Platform-Native Aesthetics and AI-Generated Imagery</h3>
           <p>The movement used AI-generated illustrations extensively. Absurdist, often surreal images: Parliament wrapped in turntables, DJs ascending to heaven, techno music literally consuming the state apparatus. This is memetic warfare, but framed as comedy, not confrontation. The AI-generated aesthetics are deliberately low-fidelity, almost crude. They lower the barrier to engagement: anyone can share absurd, AI-slop political imagery. You do not need to be a graphic designer, a professional communicator, or someone with access to state media. You need a phone and fifteen seconds.</p>
           <p>Social media metrics for the movement: Estimated reach across Instagram, TikTok, Twitter, and Telegram was 22 to 28 million accounts. Approximately 12,400 original posts contributed by independent users. An estimated 3.8 million shares of AI-generated content. These numbers indicate viral distribution without centralised authority. No single account directed the movement. It was self-replicating, platform-native, algorithmically amplified by engagement.</p>
@@ -747,7 +866,7 @@
     │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░·  ·  ·→                     │
     ╰─────────────────────────────────────────────────────────────╯</pre>
           <h2 data-i18n="rendszerbontas.en.section_6_title">6. THE STATE MEDIA BLACKOUT: AMPLIFICATION THROUGH SILENCE</h2>
-          <p>The response of the state apparatus to these cultural mobilisations was not suppression; it was silence. A total, categorical blackout.</p>
+          <p><span class="accent-word">The response of the state apparatus to these cultural mobilisations was not suppression; it was silence.</span> A total, categorical blackout.</p>
           <p>MTI (Hungarian state news agency): no coverage. hirado.hu (state news portal): no coverage. M1/M2 (state television): no coverage. MTVA/MR (state radio): no coverage. Not a single mention, not a frame, not a sentence of acknowledging that the largest civilian gathering in decades was occurring.</p>
           <p>This blackout, paradoxically, amplified the movements' reach. Because the state could not contain them, independent media rushed to fill the vacuum. Coverage exploded across Telex (500,000+ unique readers), 444.hu (400,000+ unique readers), Index (600,000+ unique readers), HVG (300,000+ unique readers), Népszava (150,000+ unique readers). Combined independent media reach: approximately 2 million unique readers, all receiving context that state media had forbidden.</p>
           <p>The blackout also drove algorithmic amplification on social platforms. Because state channels were silent, the vacuum created urgency and novelty signals. TikTok's algorithm prioritises content where engagement spikes suddenly; the state blackout created the conditions for massive algorithmic push. Users discovered concert footage, techno rave videos, and movement aesthetics not because they followed politics, but because their algorithmic feeds became saturated with trending audio, trending hashtags, and viral video clusters.</p>
@@ -782,39 +901,89 @@
           <p>But the Rendszerbontó and Több technót movements did not try to compete for institutional power. They operated in cultural and affective space. They created experiences, moments, rituals, rhythms. They made people feel something: joy, possibility, belonging, collective power.</p>
           <p>Here is the critical insight: institutional power is brittle against cultural power when the institutions have lost legitimacy. For sixteen years, young Hungarians had grown up in a state that lied, manipulated, and restricted their freedom. They did not believe in the institutions. They did not trust the courts, the media, the government. The institutions had authority, but no legitimacy.</p>
           <p>Cultural power, by contrast, derives from participation. A concert is not legitimate because an authority says it is; it is legitimate because you are there, moving, singing, with others who moved and sang with you. The Rendszerbontó was not a statement <em>about</em> democracy; it was a democracy, embodied in seven hours of collective presence.</p>
-          <p>When institutional power meets cultural power, and the institutions have no legitimacy, culture wins.</p>
+          <p><span class="accent-word">When institutional power meets cultural power, and the institutions have no legitimacy, culture wins.</span></p>
           <p>The platforms accelerated this. Because concerts and raves happen in digital as well as physical space, they could reach voters that conventional campaigns could not. A young woman in Debrecen who had never been to Budapest could see the Rendszerbontó on TikTok, feel the crowd energy through her phone, and experience herself as part of something larger. The livestream, the algorithmic distribution, the memes, the AI-generated imagery; these were not supplements to the physical event. They were extensions of it. The real event was not Hősök tere; it was the distributed collective awareness that something significant was happening and that she could participate in it.</p>
           <p>The state could not suppress this because it operated outside the channels the state controlled. You cannot shut down TikTok because you do not control it. You cannot prevent artists from posting because they have audiences outside your territory. You cannot prevent dancing because a rave is not a discrete political event; it is pleasure.</p>
-          <p>And pleasure, as political technology, is asymmetric. You can suppress a march; you send police. You can suppress a rally; you arrest organisers. You cannot suppress people dancing, because people have a fundamental right to move their bodies to music. The pleasure is the politics. The joy is the resistance.</p>
-          <pre class="diagram">    THE ASYMMETRY: INSTITUTIONAL vs. CULTURAL POWER
-    =================================================
+          <p>And pleasure, as political technology, is asymmetric. You can suppress a march; you send police. You can suppress a rally; you arrest organisers. You cannot suppress people dancing, because people have a fundamental right to move their bodies to music. <span class="accent-word">The pleasure is the politics. The joy is the resistance.</span></p>
+          <table class="data-table compare">
+            <caption>The asymmetry — institutional vs. cultural power</caption>
+            <thead>
+              <tr>
+                <th scope="col">Axis</th>
+                <th scope="col">Institutional power<br><span style="font-weight:normal;text-transform:none;letter-spacing:0;color:var(--text-dim);">(Fidesz, 2010–2026)</span></th>
+                <th scope="col">Cultural power<br><span style="font-weight:normal;text-transform:none;letter-spacing:0;color:var(--text-dim);">(Rendszerbontó / Több technót)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Axis">Structure</td>
+                <td data-label="Institutional">Centralised</td>
+                <td data-label="Cultural">Decentralised</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Direction</td>
+                <td data-label="Institutional">Top-down broadcast</td>
+                <td data-label="Cultural">Bottom-up algorithmic</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Requirement</td>
+                <td data-label="Institutional">Media ownership</td>
+                <td data-label="Cultural">A phone</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Cost</td>
+                <td data-label="Institutional" class="mono">23B HUF campaign</td>
+                <td data-label="Cultural" class="mono">46M HUF crowdfunded</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Control</td>
+                <td data-label="Institutional">Gatekeepers</td>
+                <td data-label="Cultural">No one</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Silence as tool</td>
+                <td data-label="Institutional">Suppresses</td>
+                <td data-label="Cultural">Amplified by it</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Relation</td>
+                <td data-label="Institutional">Authority without legitimacy</td>
+                <td data-label="Cultural">Legitimacy without authority</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Address</td>
+                <td data-label="Institutional">Voters as subjects</td>
+                <td data-label="Cultural">Voters as participants</td>
+              </tr>
+              <tr>
+                <td data-label="Axis">Message</td>
+                <td data-label="Institutional">Fear</td>
+                <td data-label="Cultural">Joy</td>
+              </tr>
+            </tbody>
+          </table>
 
-    INSTITUTIONAL POWER              CULTURAL POWER
-    (Fidesz, 2010-2026)             (Rendszerbontó / Több technót)
-    ─────────────────────            ─────────────────────────────
-    Centralised                      Decentralised
-    Top-down broadcast               Bottom-up algorithmic
-    Requires media ownership         Requires only a phone
-    Expensive (23B HUF campaign)     Cheap (46M HUF crowdfunded)
-    Controlled by gatekeepers        Controlled by no one
-    Suppresses through silence       Amplified by silence
-    Authority without legitimacy     Legitimacy without authority
-    Addresses voters as subjects     Addresses voters as participants
-    Message: fear                    Message: joy
-    ─────────────────────            ─────────────────────────────
-
-    SUPPRESSION RESPONSE MATRIX:
-    ┌────────────────────┬──────────────────┬─────────────┐
-    │ Threat             │ State Response   │ Outcome     │
-    ├────────────────────┼──────────────────┼─────────────┤
-    │ Protest march      │ Police, arrests  │ Suppressed  │
-    │ Opposition rally   │ Media blackout   │ Contained   │
-    │ Independent media  │ Defunding, buyout│ Captured    │
-    │ Concert            │ ?                │ Cannot stop │
-    │ Rave               │ ?                │ Cannot stop │
-    │ Dancing            │ ?                │ Cannot stop │
-    │ TikTok algorithm   │ ?                │ Cannot stop │
-    └────────────────────┴──────────────────┴─────────────┘</pre>
+          <div class="table-wrap">
+            <table class="data-table">
+              <caption>Suppression response matrix</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Threat</th>
+                  <th scope="col">State response</th>
+                  <th scope="col">Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Protest march</td><td>Police, arrests</td><td>Suppressed</td></tr>
+                <tr><td>Opposition rally</td><td>Media blackout</td><td>Contained</td></tr>
+                <tr><td>Independent media</td><td>Defunding, buyout</td><td>Captured</td></tr>
+                <tr><td>Concert</td><td class="mono">?</td><td>Cannot stop</td></tr>
+                <tr><td>Rave</td><td class="mono">?</td><td>Cannot stop</td></tr>
+                <tr><td>Dancing</td><td class="mono">?</td><td>Cannot stop</td></tr>
+                <tr><td>TikTok algorithm</td><td class="mono">?</td><td>Cannot stop</td></tr>
+              </tbody>
+            </table>
+          </div>
           <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
         </section>
         <section id="section-8">
@@ -942,7 +1111,7 @@
           <h3>Technosocial Infrastructure</h3>
           <p>Finally, we can synthesise these observations into a theory of "technosocial infrastructure": the merged ecology of technology (platforms, livestreams, algorithmic distribution) and embodied social practice (concerts, raves, dancing, presence). The Rendszerbontó was not a concert that was supplemented by social media. It was a single event that existed simultaneously in physical and digital space. A person in Debrecen watching the livestream was not a secondary audience; they were a participant. The livestream was not a recording of the event; it was part of the event's constitution.</p>
           <p>This technosocial infrastructure operated outside the institutional channels that the state controlled. The state controlled MTVA television, but not TikTok. The state could not silence the algorithm because it did not own it. A TikTok video was distributed to millions of teenagers without Fidesz approval, without state media intermediation, without institutional permission.</p>
-          <p>Authoritarian systems assume they control the distribution channels. When distribution becomes decentralised and algorithmic, their power erodes. This is the theoretical core of why vibes defeated the machine.</p>
+          <p><span class="accent-word">Authoritarian systems assume they control the distribution channels. When distribution becomes decentralised and algorithmic, their power erodes.</span> This is the theoretical core of why vibes defeated the machine.</p>
           <h3>Memeplexes and Egregores: The Emergent Collective Object</h3>
           <p>One further theoretical register is necessary to articulate what the Rendszerbontó and Több technót movements actually produced at the collective level. The concept of the "memeplex" (Dawkins, 1976; Blackmore, 1999) describes a self-reinforcing cluster of cultural units (memes) that propagate together, each element strengthening the others' transmission. The Rendszerbontó generated precisely such a cluster: the golem metaphor (Szendrői), the 4/4 constitutional demand, the AI-generated Parliament-as-turntable imagery, the "ami ma a kultúra, holnap az a politika" motto, Azahriah's closing set as a generational marker. None of these elements would have achieved critical mass alone. Together, they formed a self-replicating cultural package that moved across platforms, generations, and geographies with minimal central coordination.</p>
           <p>But the memeplex concept, rooted in evolutionary biology and information theory, does not fully capture the experiential quality of what emerged. For that, we might borrow from the older and stranger concept of the egregore: an autonomous psychic entity generated by the collective focus of a group. The term originates in esoteric traditions but has found recent analytical purchase in media theory and collective intelligence studies (Kripal, 2019; Davis, 2019). An egregore is not a metaphor for group identity; it describes the phenomenological experience that the group has produced something that exceeds its individual members, something that acts back upon them. The crowd at Hősök tere, 80,000 to 100,000 persons moving in synchrony for seven hours, reported precisely this experience: a sense that the gathering had become its own entity, that something had been summoned into existence that was not reducible to the sum of attendees.</p>
@@ -1040,11 +1209,11 @@
           <p>The conventional political science narrative would attribute this to Péter Magyar's charisma, to Tisza's rapid organisation, to Fidesz fatigue, to late campaign swings. All of these were real. But they do not explain the denominator shift; the substantial increase in turnout above 2022 levels; the specific mobilisation of the under-35 demographic.</p>
           <p>This essay argues that the denominator shift was the result of a cultural infrastructure that existed outside conventional political channels. The Rendszerbontó Nagykoncert and the Több technót a parlamentbe movements created technosocial infrastructure that reached voters where institutional politics could not. They made democratic participation feel possible and joyful, not dutiful and cynical.</p>
           <p>This is not a claim that concerts cause elections. Rather, it is a claim about causal mechanisms operating at the level of affect and collective subject formation. The concert created the conditions for voters to experience themselves as political actors. The rave created the conditions for pleasure and resistance to merge. These conditions had determinable effects on voting behaviour.</p>
-          <p>The mechanism is, in short, this: embodied cultural practices, merged with platform-native distribution, can defeat centralised institutional power when the institutions have lost legitimacy. Joy is a political technology. Movement is resistance. Collective presence is democracy.</p>
+          <p>The mechanism is, in short, this: embodied cultural practices, merged with platform-native distribution, can defeat centralised institutional power when the institutions have lost legitimacy. <span class="accent-word">Joy is a political technology. Movement is resistance. Collective presence is democracy.</span></p>
           <p>For comparative research on democratic transition, this case matters. Scholars have long understood how grassroots organising, independent media, and civic networks can defeat authoritarianism (Howard, 2010; Tufekci, 2017). This essay adds: culture, specifically youth culture mediated through platforms, can operate as a mobilisation vector as consequential as formal organisation. When young voters do not trust institutions and cannot access state media, they turn to culture. And culture, when it reaches scale and achieves collective presence, rewrites what appears possible.</p>
           <p>The immediate political question is whether the Tisza government can consolidate this transition. The 136 seats are a mandate, but the society remains polarised. Orbán's supporters view the result as illegitimate; Fidesz-KDNP retains 57 seats and deep rural support. The közmunka system remains embedded. Judiciary reform, media reform, constitutional revision; these are years-long projects.</p>
           <p>But something fundamental has shifted. A generation that grew up in a system they did not believe in, that had no faith in institutions, that had been trained in contempt for democracy; that generation danced together, saw a million of their peers do the same, and voted. The possibility was rewritten. The distribution of the sensible expanded.</p>
-          <p>In the morning after, young voters told each other: we did that. We moved the denominator. Not through petitions or lobbying, but through joy and presence and culture.</p>
+          <p>In the morning after, young voters told each other: <span class="accent-word">we did that. We moved the denominator.</span> Not through petitions or lobbying, but through joy and presence and culture.</p>
           <p>That feeling, that knowledge, that they can create political change through collective embodied practice, is the structural consequence of the Rendszerbontó and Több technót movements. Whether the Tisza government makes democracy real or simply alternates back to authoritarianism, that knowledge persists. The generation knows now that it can move the world.</p>
           <p>One final observation, offered tentatively: political scientists who resisted the explanatory power of "vibes defeated the machine" tended to be those still working within frameworks treating rational choice and institutional organisation as the only legitimate causal variables. Those frameworks are not wrong; they are incomplete. Affect, embodiment, and collective pleasure are not irrational residues. They are the mechanism by which dispersed individuals become political actors. This moment may also be part of something larger: the slow emancipation of feeling from its subordination to the post-Enlightenment clockwork model of politics — emotions entering, at last, the domain of legitimate political causation from which they had long been excluded as frivolous. The Rendszerbontó may be, among other things, a data point in that longer history.</p>
           <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
